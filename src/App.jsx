@@ -7,6 +7,7 @@ import Enquiry from './components/Enquiry';
 import Footer from './components/Footer';
 import VisualGuide from './components/VisualGuide';
 import HowItWorks from './components/HowItWorks';
+import FloatingButtons from './components/FloatingButtons';
 
 function App() {
   return (
@@ -20,6 +21,7 @@ function App() {
         <About />  {/* Add this line */}
         <Enquiry />
       </main>
+      <FloatingButtons />
       <Footer />
     </div>
   );

@@ -49,7 +49,7 @@ const Header = () => {
           <div className="flex justify-between items-center h-20">
             {/* Logo */}
             <div className="flex items-center space-x-3">
-              <div className="w-10 h-10 bg-gradient-to-br from-amber-600 to-yellow-600 rounded-lg flex items-center justify-center">
+              <div className="w-10 h-10 bg-linear-to-br from-amber-600 to-yellow-600 rounded-lg flex items-center justify-center">
                 <span className="text-white font-bold text-xl">U</span>
               </div>
               <div>
@@ -86,7 +86,7 @@ const Header = () => {
               </button>
               <button 
                 onClick={() => scrollToSection('enquiry')}
-                className="bg-gradient-to-r from-amber-700 to-amber-600 text-white px-6 py-2.5 rounded-lg hover:from-amber-800 hover:to-amber-700 font-medium shadow-md hover:shadow-lg transition-all ml-4"
+                className="bg-linear-to-r from-amber-700 to-amber-600 text-white px-6 py-2.5 rounded-lg hover:from-amber-800 hover:to-amber-700 font-medium shadow-md hover:shadow-lg transition-all ml-4"
               >
                 Get Quote
               </button>
@@ -118,7 +118,7 @@ const Header = () => {
               {/* Header */}
               <div className="flex justify-between items-center mb-8 pb-6 border-b border-gray-200">
                 <div className="flex items-center space-x-3">
-                  <div className="w-10 h-10 bg-gradient-to-br from-amber-600 to-yellow-600 rounded-lg flex items-center justify-center">
+                  <div className="w-10 h-10 bg-linear-to-br from-amber-600 to-yellow-600 rounded-lg flex items-center justify-center">
                     <span className="text-white font-bold text-lg">U</span>
                   </div>
                   <div>
@@ -193,7 +193,7 @@ const Header = () => {
                       key={index}
                       href={social.url}
                       title={social.label}
-                      className="w-11 h-11 bg-gradient-to-br from-amber-100 to-yellow-100 hover:from-amber-600 hover:to-yellow-600 rounded-xl flex items-center justify-center transition-all hover:scale-110 text-amber-700 hover:text-white shadow-sm"
+                      className="w-11 h-11 bg-linear-to-br from-amber-100 to-yellow-100 hover:from-amber-600 hover:to-yellow-600 rounded-xl flex items-center justify-center transition-all hover:scale-110 text-amber-700 hover:text-white shadow-sm"
                     >
                       {social.icon}
                     </a>
@@ -204,7 +204,7 @@ const Header = () => {
               {/* Quick Enquiry Button */}
               <button 
                 onClick={() => scrollToSection('enquiry')}
-                className="w-full bg-gradient-to-r from-amber-700 to-amber-600 text-white py-3.5 rounded-xl font-semibold mt-auto shadow-lg hover:shadow-xl hover:from-amber-800 hover:to-amber-700 transition-all"
+                className="w-full bg-lnear-to-r from-amber-700 to-amber-600 text-white py-3.5 rounded-xl font-semibold mt-auto shadow-lg hover:shadow-xl hover:from-amber-800 hover:to-amber-700 transition-all"
               >
                 Get Free Quote
               </button>
