@@ -5,6 +5,8 @@ import Products from './components/Products';
 import About from './components/About';  // Add this
 import Enquiry from './components/Enquiry';
 import Footer from './components/Footer';
+import VisualGuide from './components/VisualGuide';
+import HowItWorks from './components/HowItWorks';
 
 function App() {
   return (
@@ -13,6 +15,8 @@ function App() {
       <main>
         <Hero />
         <Products />
+        <VisualGuide />
+        <HowItWorks />
         <About />  {/* Add this line */}
         <Enquiry />
       </main>
