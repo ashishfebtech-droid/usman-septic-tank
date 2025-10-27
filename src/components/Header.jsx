@@ -1,5 +1,7 @@
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
+
 import {
   FaPhone,
   FaEnvelope,
@@ -11,6 +13,7 @@ import {
 } from "react-icons/fa";
 
 const Header = () => {
+  const navigate = useNavigate();
   const [isMenuOpen, setIsMenuOpen] = useState(false);
 
   const scrollToSection = (sectionId) => {
@@ -85,15 +88,15 @@ const Header = () => {
               >
                 Gallery
               </Link>
-
-              <button
-                onClick={() => scrollToSection("enquiry")}
+              <Link
+                to="/contact"
                 className="text-gray-700 hover:text-brown-700 hover:bg-brown-50 px-4 py-2 rounded-lg font-medium transition-all"
               >
-                Contact
-              </button>
+                Contact Us
+              </Link>
+
               <button
-                onClick={() => scrollToSection("enquiry")}
+                onClick={() => navigate("/contact#contact-form")}
                 className="bg-gradient-to-r from-brown-700 to-brown-600 text-white px-6 py-2.5 rounded-lg hover:from-brown-800 hover:to-brown-700 font-medium shadow-md hover:shadow-lg transition-all ml-4"
               >
                 Get Quote

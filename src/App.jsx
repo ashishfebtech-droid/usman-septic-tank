@@ -10,6 +10,7 @@ import TankSelectionGuide from "./pages/TankSelectionGuide"; // ✅ Correct impo
 import { useLenis } from "./hooks/useLenis";
 import "lenis/dist/lenis.css";
 import AboutPage from "./pages/About";
+import ContactPage from "./pages/Contact";
 
 function App() {
   useLenis();
@@ -23,9 +24,11 @@ function App() {
             <Route path="/" element={<Home />} />
             <Route path="/gallery" element={<Gallery />} />
             <Route path="/about" element={<AboutPage />} />
+            <Route path="/contact" element={<ContactPage />} />
             <Route
               path="/tank-selection-guide"
               element={<TankSelectionGuide />}
+              
             />{" "}
             {/* ✅ Correct route */}
           </Routes>
