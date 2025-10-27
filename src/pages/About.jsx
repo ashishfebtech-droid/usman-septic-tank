@@ -1,0 +1,256 @@
+import React from 'react';
+import { 
+  FaAward, 
+  FaUsers, 
+  FaShieldAlt, 
+  FaCheckCircle, 
+  FaHome, 
+  FaBuilding, 
+  FaIndustry,
+  FaPhone,
+  FaWhatsapp,
+  FaArrowLeft
+} from 'react-icons/fa';
+import { Link } from 'react-router-dom';
+
+const AboutPage = () => {
+  const stats = [
+    { number: "15+", label: "Years Experience", color: "from-amber-500 to-orange-600" },
+    { number: "1000+", label: "Happy Customers", color: "from-blue-500 to-blue-600" },
+    { number: "5000+", label: "Tanks Installed", color: "from-green-500 to-green-600" },
+    { number: "30+", label: "Years Lifespan", color: "from-purple-500 to-purple-600" }
+  ];
+
+  const services = [
+    {
+      icon: <FaHome className="text-3xl" />,
+      title: "Residential Tanks",
+      description: "Perfect for homes, villas, and apartments with customized sizes",
+      color: "from-blue-400 to-blue-500"
+    },
+    {
+      icon: <FaBuilding className="text-3xl" />,
+      title: "Commercial Tanks", 
+      description: "For hotels, hospitals, schools, and commercial complexes",
+      color: "from-amber-400 to-orange-500"
+    },
+    {
+      icon: <FaIndustry className="text-3xl" />,
+      title: "Industrial Tanks",
+      description: "Heavy-duty tanks for factories and industrial units",
+      color: "from-gray-600 to-gray-700"
+    }
+  ];
+
+  const values = [
+    {
+      title: "Quality First",
+      description: "We never compromise on quality. Every tank undergoes 15+ quality checks.",
+      points: ["Premium materials", "ISO standards", "Rigorous testing"],
+      color: "from-green-400 to-green-500"
+    },
+    {
+      title: "Customer Trust",
+      description: "Building long-term relationships through transparent practices.",
+      points: ["Honest pricing", "Timely service", "After-sales support"],
+      color: "from-blue-400 to-blue-500"
+    },
+    {
+      title: "Innovation",
+      description: "Continuous improvement in design and manufacturing processes.",
+      points: ["Modern techniques", "Eco-friendly", "Efficient designs"],
+      color: "from-purple-400 to-purple-500"
+    }
+  ];
+
+  return (
+    <div className="min-h-screen bg-gradient-to-b from-amber-50 to-white">
+      
+      {/* Hero Section */}
+      <section className="bg-gradient-to-br from-amber-600 via-orange-600 to-amber-700 py-20 relative overflow-hidden">
+        <div className="absolute inset-0 opacity-10">
+          <div className="absolute top-10 left-10 w-32 h-32 bg-white rounded-full blur-3xl"></div>
+          <div className="absolute bottom-10 right-10 w-40 h-40 bg-white rounded-full blur-3xl"></div>
+        </div>
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+          <Link 
+            to="/" 
+            className="inline-flex items-center text-white/80 hover:text-white mb-6 transition-colors"
+          >
+            <FaArrowLeft className="mr-2" />
+            Back to Home
+          </Link>
+          <div className="text-center">
+            <h1 className="text-4xl md:text-5xl font-bold text-white mb-6">About Usman Septic Tanks</h1>
+            <p className="text-xl text-white/90 max-w-3xl mx-auto">
+              Leading the way in RCC septic tank manufacturing with 15+ years of excellence, 
+              trust, and customer satisfaction
+            </p>
+          </div>
+        </div>
+      </section>
+
+      {/* Stats Section */}
+      <section className="py-16 bg-white">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-8">
+            {stats.map((stat, index) => (
+              <div key={index} className="text-center group">
+                <div className="relative mb-4 flex justify-center">
+                  <div className={`w-20 h-20 bg-gradient-to-br ${stat.color} rounded-2xl flex items-center justify-center shadow-lg group-hover:scale-110 transition-transform duration-300`}>
+                    <div className="text-white text-3xl font-bold">
+                      {stat.number}
+                    </div>
+                  </div>
+                </div>
+                <div className="text-gray-800 font-semibold">{stat.label}</div>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* Story Section */}
+      <section className="py-16">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
+            <div>
+              <h2 className="text-3xl font-bold text-gray-900 mb-6">Our Story</h2>
+              <div className="space-y-4 text-gray-700">
+                <p>
+                  Founded in 2008, Usman Septic Tanks began with a simple mission: to provide 
+                  reliable and durable waste management solutions to our community. What started 
+                  as a small family business has grown into a trusted name in RCC septic tank 
+                  manufacturing.
+                </p>
+                <p>
+                  Over the past 15+ years, we've installed more than 5000 septic tanks across 
+                  residential, commercial, and industrial sectors. Our commitment to quality 
+                  and customer satisfaction has been the cornerstone of our success.
+                </p>
+                <p>
+                  Today, we continue to innovate and improve our products while maintaining 
+                  the traditional values of honesty, reliability, and excellent craftsmanship 
+                  that our customers have come to trust.
+                </p>
+              </div>
+            </div>
+            <div className="bg-gradient-to-br from-amber-100 to-orange-100 rounded-3xl p-8 border border-amber-200">
+              <h3 className="text-2xl font-bold text-gray-900 mb-4">Why Choose Us?</h3>
+              <div className="space-y-3">
+                {[
+                  "15+ years of proven expertise",
+                  "1000+ satisfied customers",
+                  "Premium quality materials",
+                  "Expert engineering team",
+                  "Quick and professional installation",
+                  "Comprehensive warranty",
+                  "Custom sizes available",
+                  "Eco-friendly construction",
+                  "Competitive pricing",
+                  "After-sales support"
+                ].map((item, index) => (
+                  <div key={index} className="flex items-center space-x-3">
+                    <FaCheckCircle className="text-green-500 text-sm flex-shrink-0" />
+                    <span className="text-gray-700">{item}</span>
+                  </div>
+                ))}
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Services Section */}
+      <section className="py-16 bg-gradient-to-br from-amber-50 to-orange-50">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="text-center mb-12">
+            <h2 className="text-3xl font-bold text-gray-900 mb-4">Our Services</h2>
+            <p className="text-lg text-gray-600">Comprehensive septic tank solutions for every need</p>
+          </div>
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+            {services.map((service, index) => (
+              <div key={index} className="bg-white rounded-3xl p-6 text-center shadow-lg hover:shadow-xl transition-all duration-300 border border-amber-100 group">
+                <div className={`w-16 h-16 bg-gradient-to-br ${service.color} rounded-2xl flex items-center justify-center mx-auto mb-4 group-hover:scale-110 transition-transform duration-300`}>
+                  <div className="text-white">
+                    {service.icon}
+                  </div>
+                </div>
+                <h3 className="text-xl font-bold text-gray-900 mb-3">{service.title}</h3>
+                <p className="text-gray-600">{service.description}</p>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* Values Section */}
+      <section className="py-16 bg-white">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="text-center mb-12">
+            <h2 className="text-3xl font-bold text-gray-900 mb-4">Our Values</h2>
+            <p className="text-lg text-gray-600">The principles that guide everything we do</p>
+          </div>
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+            {values.map((value, index) => (
+              <div key={index} className="bg-gradient-to-br from-gray-50 to-amber-50 rounded-3xl p-6 border border-amber-200 group hover:shadow-lg transition-all duration-300">
+                <div className={`w-12 h-12 bg-gradient-to-br ${value.color} rounded-2xl flex items-center justify-center mb-4 group-hover:scale-110 transition-transform duration-300`}>
+                  <div className="text-white text-xl">
+                    {index === 0 && <FaShieldAlt />}
+                    {index === 1 && <FaUsers />}
+                    {index === 2 && <FaAward />}
+                  </div>
+                </div>
+                <h3 className="text-xl font-bold text-gray-900 mb-3">{value.title}</h3>
+                <p className="text-gray-600 mb-4">{value.description}</p>
+                <ul className="space-y-2">
+                  {value.points.map((point, pointIndex) => (
+                    <li key={pointIndex} className="flex items-center space-x-2 text-gray-700">
+                      <FaCheckCircle className="text-green-500 text-sm flex-shrink-0" />
+                      <span className="text-sm">{point}</span>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* CTA Section */}
+      <section className="py-16 bg-gradient-to-br from-amber-600 to-orange-600 text-white">
+        <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+          <h2 className="text-3xl font-bold mb-4">Ready to Get Started?</h2>
+          <p className="text-amber-100 mb-8 text-lg">
+            Contact us today for a free consultation and quote for your septic tank needs
+          </p>
+          <div className="flex flex-col sm:flex-row gap-4 justify-center">
+            <a 
+              href="#contact" 
+              className="inline-flex items-center justify-center px-8 py-3 bg-white text-amber-700 font-bold rounded-xl hover:bg-amber-50 transition-all duration-300 shadow-lg hover:shadow-xl hover:scale-105"
+            >
+              Get Free Quote
+            </a>
+            <a 
+              href="tel:+919012901312" 
+              className="inline-flex items-center justify-center px-8 py-3 border-2 border-white text-white font-bold rounded-xl hover:bg-white hover:text-amber-700 transition-all duration-300"
+            >
+              <FaPhone className="mr-2" />
+              Call Now
+            </a>
+            <a 
+              href="https://wa.me/919012901312" 
+              className="inline-flex items-center justify-center px-8 py-3 border-2 border-white text-white font-bold rounded-xl hover:bg-white hover:text-amber-700 transition-all duration-300"
+            >
+              <FaWhatsapp className="mr-2" />
+              WhatsApp
+            </a>
+          </div>
+        </div>
+      </section>
+
+    </div>
+  );
+};
+
+export default AboutPage;

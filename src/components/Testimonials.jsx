@@ -1,8 +1,9 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { FaStar, FaChevronLeft, FaChevronRight, FaQuoteLeft } from 'react-icons/fa';
 
 const Testimonials = () => {
   const [currentSlide, setCurrentSlide] = useState(0);
+  const [testimonialsPerView, setTestimonialsPerView] = useState(1);
 
   const testimonials = [
     {
@@ -55,7 +56,23 @@ const Testimonials = () => {
     }
   ];
 
-  const testimonialsPerView = 3; // Big screens pe 3 dikhayenge
+  // Responsive testimonials per view
+  useEffect(() => {
+    const handleResize = () => {
+      if (window.innerWidth < 768) {
+        setTestimonialsPerView(1); // Mobile: 1
+      } else if (window.innerWidth < 1024) {
+        setTestimonialsPerView(2); // Tablet: 2
+      } else {
+        setTestimonialsPerView(3); // Desktop: 3
+      }
+    };
+
+    handleResize(); // Initial call
+    window.addEventListener('resize', handleResize);
+    return () => window.removeEventListener('resize', handleResize);
+  }, []);
+
   const totalSlides = Math.ceil(testimonials.length / testimonialsPerView);
 
   const nextSlide = () => {
@@ -64,12 +81,6 @@ const Testimonials = () => {
 
   const prevSlide = () => {
     setCurrentSlide((prev) => (prev - 1 + totalSlides) % totalSlides);
-  };
-
-  // Get current testimonials to show
-  const getCurrentTestimonials = () => {
-    const startIndex = currentSlide * testimonialsPerView;
-    return testimonials.slice(startIndex, startIndex + testimonialsPerView);
   };
 
   // Render stars based on rating
@@ -82,114 +93,181 @@ const Testimonials = () => {
     ));
   };
 
+  // Get current testimonials to show
+  const getCurrentTestimonials = () => {
+    const startIndex = currentSlide * testimonialsPerView;
+    return testimonials.slice(startIndex, startIndex + testimonialsPerView);
+  };
+
   return (
-    <section id="testimonials" className="py-20 bg-white">
+    <section id="testimonials" className="py-20 bg-gradient-to-br from-amber-50 to-orange-50">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         
         {/* Section Header */}
         <div className="text-center mb-16">
-          <h2 className="text-4xl font-bold text-brown-900 mb-4">Customer Reviews</h2>
-          <p className="text-xl text-brown-600 max-w-2xl mx-auto">
-            See what our satisfied customers say about our RCC septic tanks and services
+          <span className="inline-block px-4 py-2 bg-amber-100 text-amber-800 rounded-full text-sm font-semibold mb-4 shadow-sm">
+            Customer Reviews
+          </span>
+          <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-4">
+            What Our Customers Say
+          </h2>
+          <p className="text-lg text-gray-600 max-w-2xl mx-auto">
+            Real feedback from our satisfied customers about our RCC septic tanks and services
           </p>
         </div>
 
-        {/* Carousel for ALL screens */}
+        {/* Carousel Container */}
         <div className="relative">
-          {/* Carousel Container */}
-          <div className="overflow-hidden rounded-2xl mb-6">
-            <div className="flex transition-transform duration-500 ease-in-out"
-              style={{ transform: `translateX(-${currentSlide * (100 / testimonialsPerView)}%)` }}>
-              
-              {testimonials.map((testimonial) => (
-                <div 
-                  key={testimonial.id} 
-                  className="flex-shrink-0 px-3"
-                  style={{ width: `${100 / testimonialsPerView}%` }}
-                >
-                  <div className="bg-brown-50 rounded-2xl p-6 border border-brown-200 hover:shadow-lg transition-shadow h-full">
-                    {/* Quote Icon */}
-                    <div className="text-brown-400 mb-4">
-                      <FaQuoteLeft className="w-8 h-8" />
-                    </div>
+          
+          {/* Testimonials Grid - Hidden on mobile, visible on larger screens */}
+          <div className="hidden lg:grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-8">
+            {getCurrentTestimonials().map((testimonial) => (
+              <div 
+                key={testimonial.id} 
+                className="bg-white rounded-3xl p-6 border border-amber-200 hover:shadow-xl transition-all duration-300 h-full"
+              >
+                {/* Quote Icon */}
+                <div className="text-amber-500 mb-4">
+                  <FaQuoteLeft className="w-8 h-8" />
+                </div>
 
-                    {/* Rating */}
-                    <div className="flex items-center space-x-1 mb-4">
-                      {renderStars(testimonial.rating)}
-                    </div>
+                {/* Rating */}
+                <div className="flex items-center space-x-1 mb-4">
+                  {renderStars(testimonial.rating)}
+                </div>
 
-                    {/* Comment */}
-                    <p className="text-brown-700 mb-6 leading-relaxed text-sm lg:text-base">
-                      {testimonial.comment}
-                    </p>
+                {/* Comment */}
+                <p className="text-gray-700 mb-6 leading-relaxed text-base">
+                  {testimonial.comment}
+                </p>
 
-                    {/* Customer Info */}
-                    <div className="flex items-center justify-between mt-auto">
-                      <div>
-                        <h4 className="font-bold text-brown-900">{testimonial.name}</h4>
-                        <p className="text-brown-600 text-sm">{testimonial.location}</p>
+                {/* Customer Info */}
+                <div className="flex items-center justify-between mt-auto pt-4 border-t border-amber-100">
+                  <div>
+                    <h4 className="font-bold text-gray-900">{testimonial.name}</h4>
+                    <p className="text-gray-600 text-sm">{testimonial.location}</p>
+                  </div>
+                  <span className="text-gray-500 text-sm">{testimonial.date}</span>
+                </div>
+              </div>
+            ))}
+          </div>
+
+          {/* Mobile Carousel - Visible only on mobile */}
+          <div className="lg:hidden">
+            <div className="overflow-hidden rounded-2xl mb-6">
+              <div 
+                className="flex transition-transform duration-500 ease-in-out"
+                style={{ transform: `translateX(-${currentSlide * 100}%)` }}
+              >
+                {testimonials.map((testimonial) => (
+                  <div 
+                    key={testimonial.id} 
+                    className="flex-shrink-0 w-full px-2"
+                  >
+                    <div className="bg-white rounded-3xl p-6 border border-amber-200 hover:shadow-xl transition-all duration-300 h-full mx-1">
+                      {/* Quote Icon */}
+                      <div className="text-amber-500 mb-4">
+                        <FaQuoteLeft className="w-8 h-8" />
                       </div>
-                      <span className="text-brown-500 text-xs lg:text-sm">{testimonial.date}</span>
+
+                      {/* Rating */}
+                      <div className="flex items-center space-x-1 mb-4">
+                        {renderStars(testimonial.rating)}
+                      </div>
+
+                      {/* Comment */}
+                      <p className="text-gray-700 mb-6 leading-relaxed text-base">
+                        {testimonial.comment}
+                      </p>
+
+                      {/* Customer Info */}
+                      <div className="flex items-center justify-between mt-auto pt-4 border-t border-amber-100">
+                        <div>
+                          <h4 className="font-bold text-gray-900">{testimonial.name}</h4>
+                          <p className="text-gray-600 text-sm">{testimonial.location}</p>
+                        </div>
+                        <span className="text-gray-500 text-sm">{testimonial.date}</span>
+                      </div>
                     </div>
                   </div>
-                </div>
-              ))}
+                ))}
+              </div>
             </div>
           </div>
 
-          {/* Navigation Arrows & Count - NICHE */}
-          <div className="flex justify-between items-center">
+          {/* Navigation Controls */}
+          <div className="flex justify-between items-center px-4">
             <button
               onClick={prevSlide}
-              className="w-12 h-12 bg-brown-700 text-white rounded-full flex items-center justify-center hover:bg-brown-800 transition-colors shadow-lg"
+              className="w-12 h-12 bg-amber-600 text-white rounded-full flex items-center justify-center hover:bg-amber-700 transition-all duration-300 shadow-lg hover:shadow-xl hover:scale-105"
+              aria-label="Previous testimonial"
             >
               <FaChevronLeft className="w-5 h-5" />
             </button>
             
+            {/* Slide Indicator */}
             <div className="text-center">
-              <span className="text-brown-700 font-medium">
+              <span className="text-gray-700 font-medium text-sm">
                 {currentSlide + 1} / {totalSlides}
               </span>
             </div>
 
             <button
               onClick={nextSlide}
-              className="w-12 h-12 bg-brown-700 text-white rounded-full flex items-center justify-center hover:bg-brown-800 transition-colors shadow-lg"
+              className="w-12 h-12 bg-amber-600 text-white rounded-full flex items-center justify-center hover:bg-amber-700 transition-all duration-300 shadow-lg hover:shadow-xl hover:scale-105"
+              aria-label="Next testimonial"
             >
               <FaChevronRight className="w-5 h-5" />
             </button>
           </div>
 
           {/* Dots Indicator */}
-          <div className="flex justify-center space-x-2 mt-4">
+          <div className="flex justify-center space-x-3 mt-6">
             {Array.from({ length: totalSlides }).map((_, index) => (
               <button
                 key={index}
                 onClick={() => setCurrentSlide(index)}
-                className={`w-2 h-2 rounded-full transition-colors ${
-                  index === currentSlide ? 'bg-brown-700' : 'bg-brown-300'
+                className={`w-3 h-3 rounded-full transition-all duration-300 ${
+                  index === currentSlide 
+                    ? 'bg-amber-600 scale-125' 
+                    : 'bg-amber-300 hover:bg-amber-400'
                 }`}
+                aria-label={`Go to slide ${index + 1}`}
               />
             ))}
           </div>
         </div>
 
-        {/* Stats */}
-        <div className="mt-16 bg-brown-800 text-white rounded-2xl p-8 text-center">
+        {/* Stats Section */}
+        <div className="mt-16 bg-gradient-to-br from-amber-600 to-orange-600 text-white rounded-3xl p-8 text-center shadow-2xl">
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-            <div>
-              <div className="text-3xl font-bold mb-2">4.9/5</div>
-              <p className="text-brown-200">Average Rating</p>
+            <div className="text-center">
+              <div className="text-4xl font-bold mb-2">4.9/5</div>
+              <p className="text-amber-100 text-lg">Average Rating</p>
             </div>
-            <div>
-              <div className="text-3xl font-bold mb-2">500+</div>
-              <p className="text-brown-200">Happy Customers</p>
+            <div className="text-center">
+              <div className="text-4xl font-bold mb-2">1000+</div>
+              <p className="text-amber-100 text-lg">Happy Customers</p>
             </div>
-            <div>
-              <div className="text-3xl font-bold mb-2">98%</div>
-              <p className="text-brown-200">Would Recommend</p>
+            <div className="text-center">
+              <div className="text-4xl font-bold mb-2">98%</div>
+              <p className="text-amber-100 text-lg">Would Recommend</p>
             </div>
           </div>
+        </div>
+
+        {/* CTA */}
+        <div className="text-center mt-12">
+          <p className="text-gray-600 mb-6">
+            Join our family of satisfied customers
+          </p>
+          <a 
+            href="#contact" 
+            className="inline-flex items-center px-8 py-4 bg-amber-600 text-white font-bold rounded-xl hover:bg-amber-700 transition-all duration-300 shadow-lg hover:shadow-xl hover:scale-105"
+          >
+            Get Your Tank Today
+          </a>
         </div>
 
       </div>

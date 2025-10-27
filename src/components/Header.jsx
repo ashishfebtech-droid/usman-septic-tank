@@ -68,6 +68,12 @@ const Header = () => {
                 Home
               </Link>
               <Link
+                to="/about"
+                className="text-gray-700 hover:text-brown-700 hover:bg-brown-50 px-4 py-2 rounded-lg font-medium transition-all"
+              >
+                About Us
+              </Link>
+              <Link
                 to="/tank-selection-guide"
                 className="text-gray-700 hover:text-brown-700 hover:bg-brown-50 px-4 py-2 rounded-lg font-medium transition-all"
               >
@@ -79,18 +85,7 @@ const Header = () => {
               >
                 Gallery
               </Link>
-              <button
-                onClick={() => scrollToSection("products")}
-                className="text-gray-700 hover:text-brown-700 hover:bg-brown-50 px-4 py-2 rounded-lg font-medium transition-all"
-              >
-                Products
-              </button>
-              <button
-                onClick={() => scrollToSection("about")}
-                className="text-gray-700 hover:text-brown-700 hover:bg-brown-50 px-4 py-2 rounded-lg font-medium transition-all"
-              >
-                About
-              </button>
+
               <button
                 onClick={() => scrollToSection("enquiry")}
                 className="text-gray-700 hover:text-brown-700 hover:bg-brown-50 px-4 py-2 rounded-lg font-medium transition-all"
@@ -157,6 +152,13 @@ const Header = () => {
                   Home
                 </Link>
                 <Link
+                  to="about"
+                  className="block w-full text-left text-gray-700 hover:text-brown-700 hover:bg-brown-50 font-medium py-3 px-4 rounded-lg transition-all"
+                  onClick={() => setIsMenuOpen(false)}
+                >
+                  About Us
+                </Link>
+                <Link
                   to="/tank-selection-guide"
                   className="block w-full text-left text-gray-700 hover:text-brown-700 hover:bg-brown-50 font-medium py-3 px-4 rounded-lg transition-all"
                   onClick={() => setIsMenuOpen(false)}
@@ -170,18 +172,7 @@ const Header = () => {
                 >
                   Gallery
                 </Link>
-                <button
-                  onClick={() => scrollToSection("products")}
-                  className="block w-full text-left text-gray-700 hover:text-brown-700 hover:bg-brown-50 font-medium py-3 px-4 rounded-lg transition-all"
-                >
-                  Products
-                </button>
-                <button
-                  onClick={() => scrollToSection("about")}
-                  className="block w-full text-left text-gray-700 hover:text-brown-700 hover:bg-brown-50 font-medium py-3 px-4 rounded-lg transition-all"
-                >
-                  About
-                </button>
+
                 <button
                   onClick={() => scrollToSection("enquiry")}
                   className="block w-full text-left text-gray-700 hover:text-brown-700 hover:bg-brown-50 font-medium py-3 px-4 rounded-lg transition-all"
