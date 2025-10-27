@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <title>Redirecting...</title>
+    <script>
+      // Get the path from the URL and redirect to the main app
+      const path = window.location.pathname;
+      const query = window.location.search;
+      const hash = window.location.hash;
+      // Redirect to index.html with the original path
+      window.location.href =
+        "/usman-septic-tank/index.html" +
+        (path.replace("/usman-septic-tank/", "") || "") +
+        query +
+        hash;
+    </script>
+    <noscript>
+      <meta http-equiv="refresh" content="0; url=/usman-septic-tank/" />
+    </noscript>
+  </head>
+  <body>
+    <p>
+      Redirecting...
+      <a href="/usman-septic-tank/">Click here if not redirected</a>
+    </p>
+  </body>
+</html>
