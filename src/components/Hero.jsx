@@ -19,7 +19,7 @@ const Hero = () => {
   const carouselSlides = [
     {
       id: 1,
-      image: "/images/s1.jpg",
+      image: "images/s1.jpg",
       title: "Premium RCC Construction",
       description: "High-quality reinforced cement concrete built to last",
       gradient: "from-amber-900 via-amber-800 to-amber-900",
@@ -27,7 +27,7 @@ const Hero = () => {
     },
     {
       id: 2,
-      image: "/images/s2.jpg",
+      image: "images/s2.jpg",
       title: "Durable & Long Lasting",
       description: "Built to withstand heavy loads and test of time",
       gradient: "from-stone-900 via-stone-800 to-stone-900",
@@ -35,7 +35,7 @@ const Hero = () => {
     },
     {
       id: 3,
-      image: "/images/s3.jpg",
+      image: "images/s3.jpg",
       title: "Expert Installation",
       description: "Professional team ensures quick & hassle-free setup",
       gradient: "from-amber-800 via-yellow-700 to-amber-800",
@@ -43,7 +43,7 @@ const Hero = () => {
     },
     {
       id: 4,
-      image: "/images/s4.jpg",
+      image: "images/s4.jpg",
       title: "Custom Sizes Available",
       description: "All sizes from 4×3 ft to 8×3 ft available",
       gradient: "from-yellow-900 via-amber-800 to-yellow-900",
