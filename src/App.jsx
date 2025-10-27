@@ -6,12 +6,13 @@ import FloatingButtons from "./components/FloatingButtons";
 import ScrollToTop from "./components/ScrollToTop";
 import Home from "./pages/Home";
 import Gallery from "./pages/Gallery";
-import { useLenis } from "./hooks/useLenis";  // Add this import
-import "lenis/dist/lenis.css";  // Add this import
+import TankSelectionGuide from "./pages/TankSelectionGuide"; // ✅ Correct import
+import { useLenis } from "./hooks/useLenis";
+import "lenis/dist/lenis.css";
 
 function App() {
   useLenis();
-  
+
   return (
     <Router basename="/usman-septic-tank">
       <div className="App">
@@ -20,6 +21,7 @@ function App() {
           <Routes>
             <Route path="/" element={<Home />} />
             <Route path="/gallery" element={<Gallery />} />
+            <Route path="/tank-selection-guide" element={<TankSelectionGuide />} /> {/* ✅ Correct route */}
           </Routes>
         </main>
         <Footer />
