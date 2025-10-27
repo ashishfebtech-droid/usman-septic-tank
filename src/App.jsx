@@ -9,7 +9,7 @@ import Gallery from './pages/Gallery';
 
 function App() {
   return (
-    <Router>  {/* Remove basename here */}
+    <Router basename="/usman-septic-tank">  {/* Add basename here */}
       <div className="App">
         <Header />
         <main>
