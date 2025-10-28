@@ -1,12 +1,12 @@
 import React from "react";
-import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import { HashRouter as Router, Routes, Route } from "react-router-dom";
 import Header from "./components/Header";
 import Footer from "./components/Footer";
 import FloatingButtons from "./components/FloatingButtons";
 import ScrollToTop from "./components/ScrollToTop";
 import Home from "./pages/Home";
 import Gallery from "./pages/Gallery";
-import TankSelectionGuide from "./pages/TankSelectionGuide"; // ✅ Correct import
+import TankSelectionGuide from "./pages/TankSelectionGuide";
 import { useLenis } from "./hooks/useLenis";
 import "lenis/dist/lenis.css";
 import AboutPage from "./pages/About";
@@ -16,7 +16,7 @@ function App() {
   useLenis();
 
   return (
-    <Router basename="/usman-septic-tank">
+    <Router>
       <div className="App">
         <Header />
         <main>
@@ -28,9 +28,7 @@ function App() {
             <Route
               path="/tank-selection-guide"
               element={<TankSelectionGuide />}
-              
-            />{" "}
-            {/* ✅ Correct route */}
+            />
           </Routes>
         </main>
         <Footer />

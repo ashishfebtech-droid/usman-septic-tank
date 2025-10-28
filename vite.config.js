@@ -19,12 +19,6 @@ export default defineConfig({
   build: {
     outDir: 'dist',
     assetsDir: 'assets',
-    // ✅ YEH ADD KARO - 404.html ko include karne ke liye
-    rollupOptions: {
-      input: {
-        main: './index.html',
-        '404': './404.html'
-      }
-    }
+    // ❌ Rollup options remove karein - yeh necessary nahi hai
   }
 })
