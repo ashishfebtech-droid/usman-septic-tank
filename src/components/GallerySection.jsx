@@ -82,9 +82,15 @@ const GallerySection = () => {
           <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-4">
             Recent Projects Gallery
           </h2>
-          <p className="text-gray-600 max-w-2xl mx-auto">
+          <p className="text-gray-600 max-w-2xl mx-auto mb-6">
             Take a look at our completed RCC septic tank installations across various projects
           </p>
+
+          {/* Service Badge */}
+          <div className="inline-flex items-center space-x-2 bg-green-100 text-green-800 px-4 py-2 rounded-full border border-green-200">
+            <span className="w-2 h-2 bg-green-500 rounded-full animate-pulse"></span>
+            <span className="font-semibold text-sm">All Over Uttarakhand Services</span>
+          </div>
         </div>
 
         {/* Images Grid */}

@@ -108,7 +108,9 @@ const Header = () => {
               </button>
 
               <button
-                onClick={() => navigateToPage('/contact')}
+                onClick={() => {
+                  window.location.href = '/#/contact#contact-form';
+                }}
                 className="bg-gradient-to-r from-amber-700 to-amber-600 text-white px-6 py-2.5 rounded-lg hover:from-amber-800 hover:to-amber-700 font-medium shadow-md hover:shadow-lg transition-all ml-4"
               >
                 Get Quote
@@ -242,7 +244,10 @@ const Header = () => {
 
               {/* Quick Enquiry Button */}
               <button
-                onClick={() => navigateToPage('/contact')}
+                onClick={() => {
+                  window.location.href = '/#/contact#contact-form';
+                  setIsMenuOpen(false);
+                }}
                 className="w-full bg-gradient-to-r from-amber-700 to-amber-600 text-white py-3.5 rounded-xl font-semibold mt-auto shadow-lg hover:shadow-xl hover:from-amber-800 hover:to-amber-700 transition-all"
               >
                 Get Free Quote

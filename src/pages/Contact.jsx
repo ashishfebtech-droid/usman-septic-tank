@@ -70,15 +70,15 @@ const ContactPage = () => {
 
   // Handle contact form hash
   useEffect(() => {
-    if (window.location.hash === '#contact-form') {
-      const formSection = document.getElementById('contact-form');
-      if (formSection) {
-        setTimeout(() => {
-          formSection.scrollIntoView({ behavior: 'smooth' });
-        }, 100);
-      }
+  if (window.location.hash.includes('contact-form')) {
+    const formSection = document.getElementById('contact-form');
+    if (formSection) {
+      setTimeout(() => {
+        formSection.scrollIntoView({ behavior: 'smooth' });
+      }, 100);
     }
-  }, []);
+  }
+}, []);
 
   const tankSizes = [
     "4×4 ft RCC Septic Tank",
