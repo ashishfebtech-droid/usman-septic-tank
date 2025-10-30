@@ -1,7 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { Link } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
-
 import {
   FaPhone,
   FaEnvelope,
@@ -24,17 +22,14 @@ const Header = () => {
       document.body.style.overflow = 'unset';
     }
 
-    // Cleanup function
     return () => {
       document.body.style.overflow = 'unset';
     };
   }, [isMenuOpen]);
 
-  const scrollToSection = (sectionId) => {
-    const element = document.getElementById(sectionId);
-    if (element) {
-      element.scrollIntoView({ behavior: "smooth" });
-    }
+  // Navigation function - HashRouter ke liye (Footer jaise)
+  const navigateToPage = (path) => {
+    window.location.href = `/#${path}`;
     setIsMenuOpen(false);
   };
 
@@ -62,15 +57,18 @@ const Header = () => {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex justify-between items-center h-20">
             {/* Logo */}
-            <div className="flex items-center space-x-3">
-              <div className="w-10 h-10 bg-gradient-to-br from-brown-700 to-brown-600 rounded-lg flex items-center justify-center">
+            <div 
+              className="flex items-center space-x-3 cursor-pointer hover:opacity-80 transition-opacity"
+              onClick={() => navigateToPage('/')}
+            >
+              <div className="w-10 h-10 bg-gradient-to-br from-amber-700 to-amber-600 rounded-lg flex items-center justify-center">
                 <span className="text-white font-bold text-xl">U</span>
               </div>
               <div>
                 <h2 className="text-xl font-bold text-gray-900">
                   Usman Septic Tanks
                 </h2>
-                <p className="text-xs text-brown-600 font-medium">
+                <p className="text-xs text-amber-600 font-medium">
                   Premium RCC Solutions
                 </p>
               </div>
@@ -78,40 +76,40 @@ const Header = () => {
 
             {/* Desktop Navigation */}
             <nav className="hidden lg:flex space-x-1 items-center">
-              <Link
-                to="/"
-                className="text-gray-700 hover:text-brown-700 hover:bg-brown-50 px-4 py-2 rounded-lg font-medium transition-all"
+              <button
+                onClick={() => navigateToPage('/')}
+                className="text-gray-700 hover:text-amber-700 hover:bg-amber-50 px-4 py-2 rounded-lg font-medium transition-all"
               >
                 Home
-              </Link>
-              <Link
-                to="/about"
-                className="text-gray-700 hover:text-brown-700 hover:bg-brown-50 px-4 py-2 rounded-lg font-medium transition-all"
+              </button>
+              <button
+                onClick={() => navigateToPage('/about')}
+                className="text-gray-700 hover:text-amber-700 hover:bg-amber-50 px-4 py-2 rounded-lg font-medium transition-all"
               >
                 About Us
-              </Link>
-              <Link
-                to="/tank-selection-guide"
-                className="text-gray-700 hover:text-brown-700 hover:bg-brown-50 px-4 py-2 rounded-lg font-medium transition-all"
+              </button>
+              <button
+                onClick={() => navigateToPage('/tank-selection-guide')}
+                className="text-gray-700 hover:text-amber-700 hover:bg-amber-50 px-4 py-2 rounded-lg font-medium transition-all"
               >
                 TankGuide
-              </Link>
-              <Link
-                to="/gallery"
-                className="text-gray-700 hover:text-brown-700 hover:bg-brown-50 px-4 py-2 rounded-lg font-medium transition-all"
+              </button>
+              <button
+                onClick={() => navigateToPage('/gallery')}
+                className="text-gray-700 hover:text-amber-700 hover:bg-amber-50 px-4 py-2 rounded-lg font-medium transition-all"
               >
                 Gallery
-              </Link>
-              <Link
-                to="/contact"
-                className="text-gray-700 hover:text-brown-700 hover:bg-brown-50 px-4 py-2 rounded-lg font-medium transition-all"
+              </button>
+              <button
+                onClick={() => navigateToPage('/contact')}
+                className="text-gray-700 hover:text-amber-700 hover:bg-amber-50 px-4 py-2 rounded-lg font-medium transition-all"
               >
                 Contact Us
-              </Link>
+              </button>
 
               <button
-                onClick={() => navigate("/contact#contact-form")}
-                className="bg-gradient-to-r from-brown-700 to-brown-600 text-white px-6 py-2.5 rounded-lg hover:from-brown-800 hover:to-brown-700 font-medium shadow-md hover:shadow-lg transition-all ml-4"
+                onClick={() => navigateToPage('/contact')}
+                className="bg-gradient-to-r from-amber-700 to-amber-600 text-white px-6 py-2.5 rounded-lg hover:from-amber-800 hover:to-amber-700 font-medium shadow-md hover:shadow-lg transition-all ml-4"
               >
                 Get Quote
               </button>
@@ -143,7 +141,7 @@ const Header = () => {
               {/* Header */}
               <div className="flex justify-between items-center mb-8 pb-6 border-b border-gray-200">
                 <div className="flex items-center space-x-3">
-                  <div className="w-10 h-10 bg-gradient-to-br from-brown-700 to-brown-600 rounded-lg flex items-center justify-center">
+                  <div className="w-10 h-10 bg-gradient-to-br from-amber-700 to-amber-600 rounded-lg flex items-center justify-center">
                     <span className="text-white font-bold text-lg">U</span>
                   </div>
                   <div>
@@ -161,51 +159,46 @@ const Header = () => {
 
               {/* Navigation */}
               <nav className="space-y-2 mb-8">
-                <Link
-                  to="/"
-                  className="block w-full text-left text-gray-700 hover:text-brown-700 hover:bg-brown-50 font-medium py-3 px-4 rounded-lg transition-all"
-                  onClick={() => setIsMenuOpen(false)}
+                <button
+                  onClick={() => navigateToPage('/')}
+                  className="block w-full text-left text-gray-700 hover:text-amber-700 hover:bg-amber-50 font-medium py-3 px-4 rounded-lg transition-all"
                 >
                   Home
-                </Link>
-                <Link
-                  to="/about"
-                  className="block w-full text-left text-gray-700 hover:text-brown-700 hover:bg-brown-50 font-medium py-3 px-4 rounded-lg transition-all"
-                  onClick={() => setIsMenuOpen(false)}
+                </button>
+                <button
+                  onClick={() => navigateToPage('/about')}
+                  className="block w-full text-left text-gray-700 hover:text-amber-700 hover:bg-amber-50 font-medium py-3 px-4 rounded-lg transition-all"
                 >
                   About Us
-                </Link>
-                <Link
-                  to="/tank-selection-guide"
-                  className="block w-full text-left text-gray-700 hover:text-brown-700 hover:bg-brown-50 font-medium py-3 px-4 rounded-lg transition-all"
-                  onClick={() => setIsMenuOpen(false)}
+                </button>
+                <button
+                  onClick={() => navigateToPage('/tank-selection-guide')}
+                  className="block w-full text-left text-gray-700 hover:text-amber-700 hover:bg-amber-50 font-medium py-3 px-4 rounded-lg transition-all"
                 >
                   Tank Guide
-                </Link>
-                <Link
-                  to="/gallery"
-                  className="block w-full text-left text-gray-700 hover:text-brown-700 hover:bg-brown-50 font-medium py-3 px-4 rounded-lg transition-all"
-                  onClick={() => setIsMenuOpen(false)}
+                </button>
+                <button
+                  onClick={() => navigateToPage('/gallery')}
+                  className="block w-full text-left text-gray-700 hover:text-amber-700 hover:bg-amber-50 font-medium py-3 px-4 rounded-lg transition-all"
                 >
                   Gallery
-                </Link>
-                <Link
-                  to="/contact"
-                  className="block w-full text-left text-gray-700 hover:text-brown-700 hover:bg-brown-50 font-medium py-3 px-4 rounded-lg transition-all"
-                  onClick={() => setIsMenuOpen(false)}
+                </button>
+                <button
+                  onClick={() => navigateToPage('/contact')}
+                  className="block w-full text-left text-gray-700 hover:text-amber-700 hover:bg-amber-50 font-medium py-3 px-4 rounded-lg transition-all"
                 >
                   Contact Us
-                </Link>
+                </button>
               </nav>
 
-              {/* Contact Info - Fixed Email Layout */}
-              <div className="space-y-3 mb-6 bg-brown-50 p-4 rounded-xl">
+              {/* Contact Info */}
+              <div className="space-y-3 mb-6 bg-amber-50 p-4 rounded-xl">
                 <a
                   href="tel:+919012901312"
-                  className="flex items-center space-x-3 text-gray-700 hover:text-brown-700 transition-colors"
+                  className="flex items-center space-x-3 text-gray-700 hover:text-amber-700 transition-colors"
                 >
                   <div className="w-12 h-12 bg-white rounded-lg flex items-center justify-center shadow-sm flex-shrink-0">
-                    <FaPhone className="text-brown-600 w-6 h-6" />
+                    <FaPhone className="text-amber-600 w-6 h-6" />
                   </div>
                   <div className="min-w-0 flex-1">
                     <p className="text-xs text-gray-500">Call Us</p>
@@ -214,10 +207,10 @@ const Header = () => {
                 </a>
                 <a
                   href="mailto:usmanseptiktankuk17@gmail.com"
-                  className="flex items-center space-x-3 text-gray-700 hover:text-brown-700 transition-colors"
+                  className="flex items-center space-x-3 text-gray-700 hover:text-amber-700 transition-colors"
                 >
                   <div className="w-12 h-12 bg-white rounded-lg flex items-center justify-center shadow-sm flex-shrink-0">
-                    <FaEnvelope className="text-brown-600 w-6 h-6" />
+                    <FaEnvelope className="text-amber-600 w-6 h-6" />
                   </div>
                   <div className="min-w-0 flex-1">
                     <p className="text-xs text-gray-500">Email Us</p>
@@ -239,7 +232,7 @@ const Header = () => {
                       key={index}
                       href={social.url}
                       title={social.label}
-                      className="w-11 h-11 bg-gradient-to-br from-brown-100 to-brown-200 hover:from-brown-600 hover:to-brown-700 rounded-xl flex items-center justify-center transition-all hover:scale-110 text-brown-700 hover:text-white shadow-sm"
+                      className="w-11 h-11 bg-gradient-to-br from-amber-100 to-amber-200 hover:from-amber-600 hover:to-amber-700 rounded-xl flex items-center justify-center transition-all hover:scale-110 text-amber-700 hover:text-white shadow-sm"
                     >
                       {social.icon}
                     </a>
@@ -249,11 +242,8 @@ const Header = () => {
 
               {/* Quick Enquiry Button */}
               <button
-                onClick={() => {
-                  navigate("/contact#contact-form");
-                  setIsMenuOpen(false);
-                }}
-                className="w-full bg-gradient-to-r from-brown-700 to-brown-600 text-white py-3.5 rounded-xl font-semibold mt-auto shadow-lg hover:shadow-xl hover:from-brown-800 hover:to-brown-700 transition-all"
+                onClick={() => navigateToPage('/contact')}
+                className="w-full bg-gradient-to-r from-amber-700 to-amber-600 text-white py-3.5 rounded-xl font-semibold mt-auto shadow-lg hover:shadow-xl hover:from-amber-800 hover:to-amber-700 transition-all"
               >
                 Get Free Quote
               </button>

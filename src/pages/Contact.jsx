@@ -16,7 +16,6 @@ import {
 import { Link } from 'react-router-dom';
 
 const ContactPage = () => {
-  const [isVisible, setIsVisible] = useState(false);
   const [formData, setFormData] = useState({
     name: '',
     phone: '',
@@ -26,30 +25,46 @@ const ContactPage = () => {
   });
 
   const [isSubmitting, setIsSubmitting] = useState(false);
-  const sectionRef = useRef(null);
+  const [visibleElements, setVisibleElements] = useState({});
+  const elementsRef = useRef({});
 
-  // Scroll observer for entrance animations
+  // Enhanced scroll observer - tracks individual elements
   useEffect(() => {
     const observer = new IntersectionObserver(
-      ([entry]) => {
-        if (entry.isIntersecting) {
-          setIsVisible(true);
-        }
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            setVisibleElements(prev => ({
+              ...prev,
+              [entry.target.id]: true
+            }));
+          }
+        });
       },
       {
         threshold: 0.1,
-        rootMargin: '-50px 0px'
+        rootMargin: '0px 0px -50px 0px'
       }
     );
 
-    if (sectionRef.current) {
-      observer.observe(sectionRef.current);
-    }
+    // Observe all elements with data-animate attribute
+    const animateElements = document.querySelectorAll('[data-animate]');
+    animateElements.forEach((el) => {
+      observer.observe(el);
+      // Set initial state - check if already in viewport
+      const rect = el.getBoundingClientRect();
+      if (rect.top < window.innerHeight && rect.bottom > 0) {
+        setVisibleElements(prev => ({
+          ...prev,
+          [el.id]: true
+        }));
+      }
+    });
 
     return () => {
-      if (sectionRef.current) {
-        observer.unobserve(sectionRef.current);
-      }
+      animateElements.forEach((el) => {
+        observer.unobserve(el);
+      });
     };
   }, []);
 
@@ -89,7 +104,6 @@ const ContactPage = () => {
     e.preventDefault();
     setIsSubmitting(true);
     
-    // Simulate form submission
     setTimeout(() => {
       console.log('Form submitted:', formData);
       alert('Thank you for your enquiry! We will contact you within 24 hours.');
@@ -161,9 +175,12 @@ const ContactPage = () => {
     }
   ];
 
-  // Staggered animation delay function
   const getStaggerDelay = (index) => {
     return index * 100;
+  };
+
+  const isElementVisible = (elementId) => {
+    return visibleElements[elementId] || false;
   };
 
   return (
@@ -171,7 +188,8 @@ const ContactPage = () => {
       
       {/* Hero Section */}
       <section 
-        ref={sectionRef}
+        id="hero-section"
+        data-animate="true"
         className="bg-gradient-to-br from-amber-600 via-orange-600 to-amber-700 py-20 pt-32 relative overflow-hidden"
       >
         <div className="absolute inset-0 opacity-10">
@@ -179,8 +197,6 @@ const ContactPage = () => {
           <div className="absolute bottom-10 right-10 w-40 h-40 bg-white rounded-full blur-3xl"></div>
         </div>
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
-          {/* Back to Home Button */}
-          
             <Link 
               to="/" 
               className="inline-flex items-center text-white/80 hover:text-white transition-colors bg-white/10 backdrop-blur-sm px-4 py-2 rounded-lg hover:bg-white/20"
@@ -188,10 +204,9 @@ const ContactPage = () => {
               <FaArrowLeft className="mr-2" />
               Back to Home
             </Link>
-       
 
           <div className={`text-center transition-all duration-700 ${
-            isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'
+            isElementVisible('hero-section') ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'
           }`}>
             <h1 className="text-4xl md:text-5xl font-bold text-white mb-6">Contact Us</h1>
             <p className="text-xl text-white/90 max-w-3xl mx-auto">
@@ -204,8 +219,11 @@ const ContactPage = () => {
       {/* Contact Methods */}
       <section className="py-16 bg-white">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className={`text-center mb-12 transition-all duration-700 ${
-            isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'
+          <div 
+            id="get-in-touch"
+            data-animate="true"
+            className={`text-center mb-12 transition-all duration-700 ${
+            isElementVisible('get-in-touch') ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'
           }`}>
             <h2 className="text-3xl font-bold text-gray-900 mb-4">Get In Touch</h2>
             <p className="text-lg text-gray-600">Multiple ways to reach us for your septic tank requirements</p>
@@ -216,10 +234,12 @@ const ContactPage = () => {
               <a
                 key={index}
                 href={method.link}
+                id={`contact-method-${index}`}
+                data-animate="true"
                 className="block group"
               >
                 <div className={`bg-gradient-to-br from-gray-50 to-white rounded-3xl p-6 border border-amber-200 hover:shadow-2xl transition-all duration-500 hover:border-amber-300 group-hover:scale-105 h-full text-center ${
-                  isVisible ? 'opacity-100 scale-100' : 'opacity-0 scale-95'
+                  isElementVisible(`contact-method-${index}`) ? 'opacity-100 scale-100' : 'opacity-0 scale-95'
                 }`}
                 style={{ transitionDelay: `${getStaggerDelay(index)}ms` }}
               >
@@ -247,9 +267,11 @@ const ContactPage = () => {
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
             {features.map((feature, index) => (
               <div 
-                key={index} 
+                key={index}
+                id={`feature-${index}`}
+                data-animate="true"
                 className={`text-center group transition-all duration-700 ${
-                  isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'
+                  isElementVisible(`feature-${index}`) ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'
                 }`}
                 style={{ transitionDelay: `${getStaggerDelay(index) + 400}ms` }}
               >
@@ -267,10 +289,10 @@ const ContactPage = () => {
       </section>
 
       {/* Contact Form Section */}
-      <section id="contact-form" className="py-16 bg-gradient-to-br from-amber-50 to-orange-50">
+      <section id="contact-form" data-animate="true" className="py-16 bg-gradient-to-br from-amber-50 to-orange-50">
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className={`bg-white rounded-3xl p-8 md:p-12 shadow-2xl border border-amber-200 transition-all duration-700 ${
-            isVisible ? 'opacity-100 scale-100' : 'opacity-0 scale-95'
+            isElementVisible('contact-form') ? 'opacity-100 scale-100' : 'opacity-0 scale-95'
           }`} style={{ transitionDelay: '500ms' }}>
             <div className="text-center mb-8">
               <h2 className="text-3xl font-bold text-gray-900 mb-4">Send Us Your Requirements</h2>
@@ -281,7 +303,7 @@ const ContactPage = () => {
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                 {/* Name */}
                 <div className={`group transition-all duration-700 ${
-                  isVisible ? 'opacity-100 translate-x-0' : 'opacity-0 -translate-x-6'
+                  isElementVisible('contact-form') ? 'opacity-100 translate-x-0' : 'opacity-0 -translate-x-6'
                 }`} style={{ transitionDelay: '600ms' }}>
                   <label className="block text-gray-700 font-semibold mb-3">
                     <FaUser className="inline mr-2 text-amber-600" />
@@ -300,7 +322,7 @@ const ContactPage = () => {
 
                 {/* Phone */}
                 <div className={`group transition-all duration-700 ${
-                  isVisible ? 'opacity-100 translate-x-0' : 'opacity-0 translate-x-6'
+                  isElementVisible('contact-form') ? 'opacity-100 translate-x-0' : 'opacity-0 translate-x-6'
                 }`} style={{ transitionDelay: '650ms' }}>
                   <label className="block text-gray-700 font-semibold mb-3">
                     <FaPhone className="inline mr-2 text-amber-600" />
@@ -321,7 +343,7 @@ const ContactPage = () => {
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                 {/* Email */}
                 <div className={`group transition-all duration-700 ${
-                  isVisible ? 'opacity-100 translate-x-0' : 'opacity-0 -translate-x-6'
+                  isElementVisible('contact-form') ? 'opacity-100 translate-x-0' : 'opacity-0 -translate-x-6'
                 }`} style={{ transitionDelay: '700ms' }}>
                   <label className="block text-gray-700 font-semibold mb-3">
                     <FaEnvelope className="inline mr-2 text-amber-600" />
@@ -339,7 +361,7 @@ const ContactPage = () => {
 
                 {/* Tank Size */}
                 <div className={`group transition-all duration-700 ${
-                  isVisible ? 'opacity-100 translate-x-0' : 'opacity-0 translate-x-6'
+                  isElementVisible('contact-form') ? 'opacity-100 translate-x-0' : 'opacity-0 translate-x-6'
                 }`} style={{ transitionDelay: '750ms' }}>
                   <label className="block text-gray-700 font-semibold mb-3">
                     Interested Tank Size
@@ -360,7 +382,7 @@ const ContactPage = () => {
 
               {/* Message */}
               <div className={`group transition-all duration-700 ${
-                isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'
+                isElementVisible('contact-form') ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'
               }`} style={{ transitionDelay: '800ms' }}>
                 <label className="block text-gray-700 font-semibold mb-3">
                   Additional Requirements
@@ -377,7 +399,7 @@ const ContactPage = () => {
 
               {/* Submit Button */}
               <div className={`transition-all duration-700 ${
-                isVisible ? 'opacity-100 scale-100' : 'opacity-0 scale-95'
+                isElementVisible('contact-form') ? 'opacity-100 scale-100' : 'opacity-0 scale-95'
               }`} style={{ transitionDelay: '900ms' }}>
                 <button
                   type="submit"
@@ -399,15 +421,21 @@ const ContactPage = () => {
       {/* Map & Location Section */}
       <section className="py-16 bg-white">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className={`text-center mb-12 transition-all duration-700 ${
-            isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'
+          <div 
+            id="location-heading"
+            data-animate="true"
+            className={`text-center mb-12 transition-all duration-700 ${
+            isElementVisible('location-heading') ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'
           }`}>
             <h2 className="text-3xl font-bold text-gray-900 mb-4">Visit Our Location</h2>
             <p className="text-gray-600">Come visit us for a free site consultation and expert advice</p>
           </div>
           
-          <div className={`bg-gradient-to-br from-amber-100 to-orange-100 rounded-3xl p-8 border border-amber-200 transition-all duration-700 ${
-            isVisible ? 'opacity-100 scale-100' : 'opacity-0 scale-95'
+          <div 
+            id="location-card"
+            data-animate="true"
+            className={`bg-gradient-to-br from-amber-100 to-orange-100 rounded-3xl p-8 border border-amber-200 transition-all duration-700 ${
+            isElementVisible('location-card') ? 'opacity-100 scale-100' : 'opacity-0 scale-95'
           }`} style={{ transitionDelay: '600ms' }}>
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 items-center">
               <div>

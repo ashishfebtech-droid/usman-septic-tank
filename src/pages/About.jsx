@@ -1,3 +1,7 @@
+// ============================================
+// ABOUT PAGE - AboutPage.jsx
+// ============================================
+
 import React, { useState, useEffect, useRef } from 'react';
 import { 
   FaAward, 
@@ -16,33 +20,51 @@ import {
 import { Link } from 'react-router-dom';
 
 const AboutPage = () => {
-  const [isVisible, setIsVisible] = useState(false);
-  const sectionRef = useRef(null);
+  const [visibleElements, setVisibleElements] = useState({});
 
-  // Scroll observer for entrance animations
+  // Enhanced scroll observer - tracks individual elements
   useEffect(() => {
     const observer = new IntersectionObserver(
-      ([entry]) => {
-        if (entry.isIntersecting) {
-          setIsVisible(true);
-        }
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            setVisibleElements(prev => ({
+              ...prev,
+              [entry.target.id]: true
+            }));
+          }
+        });
       },
       {
         threshold: 0.1,
-        rootMargin: '-50px 0px'
+        rootMargin: '0px 0px -50px 0px'
       }
     );
 
-    if (sectionRef.current) {
-      observer.observe(sectionRef.current);
-    }
+    // Observe all elements with data-animate attribute
+    const animateElements = document.querySelectorAll('[data-animate]');
+    animateElements.forEach((el) => {
+      observer.observe(el);
+      // Set initial state - check if already in viewport
+      const rect = el.getBoundingClientRect();
+      if (rect.top < window.innerHeight && rect.bottom > 0) {
+        setVisibleElements(prev => ({
+          ...prev,
+          [el.id]: true
+        }));
+      }
+    });
 
     return () => {
-      if (sectionRef.current) {
-        observer.unobserve(sectionRef.current);
-      }
+      animateElements.forEach((el) => {
+        observer.unobserve(el);
+      });
     };
   }, []);
+
+  const isElementVisible = (elementId) => {
+    return visibleElements[elementId] || false;
+  };
 
   const stats = [
     { number: "15+", label: "Years Experience", color: "from-amber-500 to-orange-600" },
@@ -93,7 +115,6 @@ const AboutPage = () => {
     }
   ];
 
-  // Staggered animation delay function
   const getStaggerDelay = (index) => {
     return index * 100;
   };
@@ -101,9 +122,10 @@ const AboutPage = () => {
   return (
     <div className="min-h-screen bg-gradient-to-b from-amber-50 to-white">
       
-      {/* Hero Section - Added padding for fixed header */}
+      {/* Hero Section */}
       <section 
-        ref={sectionRef}
+        id="hero-section"
+        data-animate="true"
         className="bg-gradient-to-br from-amber-600 via-orange-600 to-amber-700 py-32 pt-32 relative overflow-hidden"
       >
         <div className="absolute inset-0 opacity-10">
@@ -119,7 +141,7 @@ const AboutPage = () => {
             Back to Home
           </Link>
           <div className={`text-center transition-all duration-700 ${
-            isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'
+            isElementVisible('hero-section') ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'
           }`}>
             <h1 className="text-4xl md:text-5xl font-bold text-white mb-6">About Usman Septic Tanks</h1>
             <p className="text-xl text-white/90 max-w-3xl mx-auto mb-8">
@@ -161,9 +183,11 @@ const AboutPage = () => {
           <div className="grid grid-cols-2 md:grid-cols-4 gap-8">
             {stats.map((stat, index) => (
               <div 
-                key={index} 
+                key={index}
+                id={`stat-${index}`}
+                data-animate="true"
                 className={`text-center group transition-all duration-700 ${
-                  isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'
+                  isElementVisible(`stat-${index}`) ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'
                 }`}
                 style={{ transitionDelay: `${getStaggerDelay(index)}ms` }}
               >
@@ -185,31 +209,37 @@ const AboutPage = () => {
       <section className="py-16">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
-            <div className={`transition-all duration-700 ${
-              isVisible ? 'opacity-100 translate-x-0' : 'opacity-0 -translate-x-8'
+            <div 
+              id="story-content"
+              data-animate="true"
+              className={`transition-all duration-700 ${
+              isElementVisible('story-content') ? 'opacity-100 translate-x-0' : 'opacity-0 -translate-x-8'
             }`}>
               <h2 className="text-3xl font-bold text-gray-900 mb-6">Our Story</h2>
               <div className="space-y-4 text-gray-700">
-                <p className="transition-all duration-700 delay-200">
+                <p>
                   Founded in 2008, Usman Septic Tanks began with a simple mission: to provide 
                   reliable and durable waste management solutions to our community. What started 
                   as a small family business has grown into a trusted name in RCC septic tank 
                   manufacturing.
                 </p>
-                <p className="transition-all duration-700 delay-300">
+                <p>
                   Over the past 15+ years, we've installed more than 5000 septic tanks across 
                   residential, commercial, and industrial sectors. Our commitment to quality 
                   and customer satisfaction has been the cornerstone of our success.
                 </p>
-                <p className="transition-all duration-700 delay-400">
+                <p>
                   Today, we continue to innovate and improve our products while maintaining 
                   the traditional values of honesty, reliability, and excellent craftsmanship 
                   that our customers have come to trust.
                 </p>
               </div>
             </div>
-            <div className={`bg-gradient-to-br from-amber-100 to-orange-100 rounded-3xl p-8 border border-amber-200 transition-all duration-700 ${
-              isVisible ? 'opacity-100 translate-x-0' : 'opacity-0 translate-x-8'
+            <div 
+              id="why-choose-us"
+              data-animate="true"
+              className={`bg-gradient-to-br from-amber-100 to-orange-100 rounded-3xl p-8 border border-amber-200 transition-all duration-700 ${
+              isElementVisible('why-choose-us') ? 'opacity-100 translate-x-0' : 'opacity-0 translate-x-8'
             }`} style={{ transitionDelay: '500ms' }}>
               <h3 className="text-2xl font-bold text-gray-900 mb-4">Why Choose Us?</h3>
               <div className="space-y-3">
@@ -226,12 +256,13 @@ const AboutPage = () => {
                   "After-sales support"
                 ].map((item, index) => (
                   <div 
-                    key={index} 
-                    className="flex items-center space-x-3 transition-all duration-500"
-                    style={{ transitionDelay: `${getStaggerDelay(index) + 600}ms` }}
+                    key={index}
+                    id={`why-item-${index}`}
+                    data-animate="true"
                     className={`flex items-center space-x-3 transition-all duration-500 ${
-                      isVisible ? 'opacity-100 translate-x-0' : 'opacity-0 -translate-x-4'
+                      isElementVisible(`why-item-${index}`) ? 'opacity-100 translate-x-0' : 'opacity-0 -translate-x-4'
                     }`}
+                    style={{ transitionDelay: `${getStaggerDelay(index) + 600}ms` }}
                   >
                     <FaCheckCircle className="text-green-500 text-sm flex-shrink-0" />
                     <span className="text-gray-700">{item}</span>
@@ -246,8 +277,11 @@ const AboutPage = () => {
       {/* Services Section */}
       <section className="py-16 bg-gradient-to-br from-amber-50 to-orange-50">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className={`text-center mb-12 transition-all duration-700 ${
-            isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'
+          <div 
+            id="services-heading"
+            data-animate="true"
+            className={`text-center mb-12 transition-all duration-700 ${
+            isElementVisible('services-heading') ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'
           }`}>
             <h2 className="text-3xl font-bold text-gray-900 mb-4">Our Services</h2>
             <p className="text-lg text-gray-600">Comprehensive septic tank solutions for every need</p>
@@ -255,9 +289,11 @@ const AboutPage = () => {
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
             {services.map((service, index) => (
               <div 
-                key={index} 
+                key={index}
+                id={`service-${index}`}
+                data-animate="true"
                 className={`bg-white rounded-3xl p-6 text-center shadow-lg hover:shadow-xl transition-all duration-500 border border-amber-100 group ${
-                  isVisible ? 'opacity-100 scale-100' : 'opacity-0 scale-95'
+                  isElementVisible(`service-${index}`) ? 'opacity-100 scale-100' : 'opacity-0 scale-95'
                 }`}
                 style={{ transitionDelay: `${getStaggerDelay(index)}ms` }}
               >
@@ -277,8 +313,11 @@ const AboutPage = () => {
       {/* Values Section */}
       <section className="py-16 bg-white">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className={`text-center mb-12 transition-all duration-700 ${
-            isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'
+          <div 
+            id="values-heading"
+            data-animate="true"
+            className={`text-center mb-12 transition-all duration-700 ${
+            isElementVisible('values-heading') ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'
           }`}>
             <h2 className="text-3xl font-bold text-gray-900 mb-4">Our Values</h2>
             <p className="text-lg text-gray-600">The principles that guide everything we do</p>
@@ -286,9 +325,11 @@ const AboutPage = () => {
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
             {values.map((value, index) => (
               <div 
-                key={index} 
+                key={index}
+                id={`value-${index}`}
+                data-animate="true"
                 className={`bg-gradient-to-br from-gray-50 to-amber-50 rounded-3xl p-6 border border-amber-200 group hover:shadow-lg transition-all duration-500 ${
-                  isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'
+                  isElementVisible(`value-${index}`) ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'
                 }`}
                 style={{ transitionDelay: `${getStaggerDelay(index)}ms` }}
               >
@@ -304,12 +345,13 @@ const AboutPage = () => {
                 <ul className="space-y-2">
                   {value.points.map((point, pointIndex) => (
                     <li 
-                      key={pointIndex} 
-                      className="flex items-center space-x-2 text-gray-700 transition-all duration-500"
-                      style={{ transitionDelay: `${getStaggerDelay(pointIndex) + 300}ms` }}
+                      key={pointIndex}
+                      id={`value-point-${index}-${pointIndex}`}
+                      data-animate="true"
                       className={`flex items-center space-x-2 text-gray-700 transition-all duration-500 ${
-                        isVisible ? 'opacity-100 translate-x-0' : 'opacity-0 -translate-x-4'
+                        isElementVisible(`value-point-${index}-${pointIndex}`) ? 'opacity-100 translate-x-0' : 'opacity-0 -translate-x-4'
                       }`}
+                      style={{ transitionDelay: `${getStaggerDelay(pointIndex) + 300}ms` }}
                     >
                       <FaCheckCircle className="text-green-500 text-sm flex-shrink-0" />
                       <span className="text-sm">{point}</span>
@@ -323,10 +365,13 @@ const AboutPage = () => {
       </section>
 
       {/* CTA Section */}
-      <section className="py-16 bg-gradient-to-br from-amber-600 to-orange-600 text-white">
+      <section 
+        id="cta-section"
+        data-animate="true"
+        className="py-16 bg-gradient-to-br from-amber-600 to-orange-600 text-white">
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
           <div className={`transition-all duration-700 ${
-            isVisible ? 'opacity-100 scale-100' : 'opacity-0 scale-95'
+            isElementVisible('cta-section') ? 'opacity-100 scale-100' : 'opacity-0 scale-95'
           }`}>
             <h2 className="text-3xl font-bold mb-4">Ready to Get Started?</h2>
             <p className="text-amber-100 mb-8 text-lg">
