@@ -55,6 +55,11 @@ const TankSelectionGuide = () => {
     document.getElementById("products-section")?.scrollIntoView({ behavior: "smooth" });
   };
 
+  // Function to navigate to contact form
+  const handleGetQuote = () => {
+    window.location.href = '/#/contact#contact-form';
+  };
+
   const useCases = [
     {
       icon: <FaHome className="text-4xl" />,
@@ -307,7 +312,9 @@ const TankSelectionGuide = () => {
                     </div>
 
                     <div className="border-t border-gray-200 pt-4 mt-auto">
-                      <button className="w-full bg-gradient-to-r from-amber-600 to-orange-600 text-white py-3 rounded-xl hover:from-amber-700 hover:to-orange-700 transition-all duration-300 font-semibold flex items-center justify-center space-x-2 shadow-md hover:shadow-lg hover:scale-105">
+                      <button 
+                        onClick={handleGetQuote}
+                        className="w-full bg-gradient-to-r from-amber-600 to-orange-600 text-white py-3 rounded-xl hover:from-amber-700 hover:to-orange-700 transition-all duration-300 font-semibold flex items-center justify-center space-x-2 shadow-md hover:shadow-lg hover:scale-105">
                         <span>Get Quote</span>
                         <FaArrowRight className="text-sm" />
                       </button>
@@ -360,10 +367,12 @@ const TankSelectionGuide = () => {
                 <FaPhone className="mr-3 group-hover:rotate-12 transition-transform" />
                 Call: 90129 01312
               </a>
-              <a href="https://wa.me/919012901312" target="_blank" rel="noopener noreferrer" className="group inline-flex items-center justify-center bg-green-600 text-white px-8 py-4 rounded-xl font-bold text-lg hover:bg-green-700 transition-all shadow-xl hover:shadow-2xl hover:scale-105">
+              <button 
+                onClick={handleGetQuote}
+                className="group inline-flex items-center justify-center bg-green-600 text-white px-8 py-4 rounded-xl font-bold text-lg hover:bg-green-700 transition-all shadow-xl hover:shadow-2xl hover:scale-105">
                 <FaWhatsapp className="mr-3 group-hover:scale-110 transition-transform" />
-                WhatsApp Now
-              </a>
+                Get Free Quote
+              </button>
             </div>
             <p className="text-white/80 mt-6 text-sm">⏰ 24x7 Available - कोई भी समय संपर्क करें</p>
           </div>
