@@ -15,8 +15,11 @@ import ContactPage from "./pages/Contact";
 function App() {
   useLenis();
 
+  // Production mein basename set karo, local mein empty string
+  const basename = import.meta.env.MODE === 'production' ? '/usman-septic-tank/' : '/';
+
   return (
-    <Router>
+    <Router basename={basename}>
       <div className="App">
         <Header />
         <main>
