@@ -1,9 +1,53 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { FaStar, FaChevronLeft, FaChevronRight, FaQuoteLeft } from 'react-icons/fa';
 
 const Testimonials = () => {
   const [currentSlide, setCurrentSlide] = useState(0);
   const [testimonialsPerView, setTestimonialsPerView] = useState(1);
+  const [isVisible, setIsVisible] = useState(false);
+  const sectionRef = useRef(null);
+
+  // Scroll observer for entrance animations
+  useEffect(() => {
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) {
+          setIsVisible(true);
+        }
+      },
+      {
+        threshold: 0.1,
+        rootMargin: '-50px 0px'
+      }
+    );
+
+    if (sectionRef.current) {
+      observer.observe(sectionRef.current);
+    }
+
+    return () => {
+      if (sectionRef.current) {
+        observer.unobserve(sectionRef.current);
+      }
+    };
+  }, []);
+
+  // Responsive testimonials per view
+  useEffect(() => {
+    const handleResize = () => {
+      if (window.innerWidth < 768) {
+        setTestimonialsPerView(1); // Mobile: 1
+      } else if (window.innerWidth < 1024) {
+        setTestimonialsPerView(2); // Tablet: 2
+      } else {
+        setTestimonialsPerView(3); // Desktop: 3
+      }
+    };
+
+    handleResize(); // Initial call
+    window.addEventListener('resize', handleResize);
+    return () => window.removeEventListener('resize', handleResize);
+  }, []);
 
   const testimonials = [
     {
@@ -56,23 +100,6 @@ const Testimonials = () => {
     }
   ];
 
-  // Responsive testimonials per view
-  useEffect(() => {
-    const handleResize = () => {
-      if (window.innerWidth < 768) {
-        setTestimonialsPerView(1); // Mobile: 1
-      } else if (window.innerWidth < 1024) {
-        setTestimonialsPerView(2); // Tablet: 2
-      } else {
-        setTestimonialsPerView(3); // Desktop: 3
-      }
-    };
-
-    handleResize(); // Initial call
-    window.addEventListener('resize', handleResize);
-    return () => window.removeEventListener('resize', handleResize);
-  }, []);
-
   const totalSlides = Math.ceil(testimonials.length / testimonialsPerView);
 
   const nextSlide = () => {
@@ -99,12 +126,23 @@ const Testimonials = () => {
     return testimonials.slice(startIndex, startIndex + testimonialsPerView);
   };
 
+  // Staggered animation delay function
+  const getStaggerDelay = (index) => {
+    return index * 100;
+  };
+
   return (
-    <section id="testimonials" className="py-20 bg-gradient-to-br from-amber-50 to-orange-50">
+    <section 
+      id="testimonials" 
+      ref={sectionRef}
+      className="py-20 bg-gradient-to-br from-amber-50 to-orange-50"
+    >
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         
         {/* Section Header */}
-        <div className="text-center mb-16">
+        <div className={`text-center mb-16 transition-all duration-700 ${
+          isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'
+        }`}>
           <span className="inline-block px-4 py-2 bg-amber-100 text-amber-800 rounded-full text-sm font-semibold mb-4 shadow-sm">
             Customer Reviews
           </span>
@@ -121,10 +159,16 @@ const Testimonials = () => {
           
           {/* Testimonials Grid - Hidden on mobile, visible on larger screens */}
           <div className="hidden lg:grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-8">
-            {getCurrentTestimonials().map((testimonial) => (
+            {getCurrentTestimonials().map((testimonial, index) => (
               <div 
                 key={testimonial.id} 
-                className="bg-white rounded-3xl p-6 border border-amber-200 hover:shadow-xl transition-all duration-300 h-full"
+                className={`bg-white rounded-3xl p-6 border border-amber-200 hover:shadow-xl transition-all duration-500 h-full ${
+                  isVisible ? 'opacity-100 scale-100' : 'opacity-0 scale-95'
+                }`}
+                style={{ 
+                  transitionDelay: `${getStaggerDelay(index)}ms`,
+                  transform: isVisible ? 'scale(1)' : 'scale(0.95)'
+                }}
               >
                 {/* Quote Icon */}
                 <div className="text-amber-500 mb-4">
@@ -160,12 +204,18 @@ const Testimonials = () => {
                 className="flex transition-transform duration-500 ease-in-out"
                 style={{ transform: `translateX(-${currentSlide * 100}%)` }}
               >
-                {testimonials.map((testimonial) => (
+                {testimonials.map((testimonial, index) => (
                   <div 
                     key={testimonial.id} 
                     className="flex-shrink-0 w-full px-2"
                   >
-                    <div className="bg-white rounded-3xl p-6 border border-amber-200 hover:shadow-xl transition-all duration-300 h-full mx-1">
+                    <div className={`bg-white rounded-3xl p-6 border border-amber-200 hover:shadow-xl transition-all duration-500 h-full mx-1 ${
+                      isVisible ? 'opacity-100 scale-100' : 'opacity-0 scale-95'
+                    }`}
+                    style={{ 
+                      transitionDelay: `${getStaggerDelay(index)}ms`,
+                      transform: isVisible ? 'scale(1)' : 'scale(0.95)'
+                    }}>
                       {/* Quote Icon */}
                       <div className="text-amber-500 mb-4">
                         <FaQuoteLeft className="w-8 h-8" />
@@ -197,7 +247,9 @@ const Testimonials = () => {
           </div>
 
           {/* Navigation Controls */}
-          <div className="flex justify-between items-center px-4">
+          <div className={`flex justify-between items-center px-4 transition-all duration-700 ${
+            isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'
+          }`} style={{ transitionDelay: '400ms' }}>
             <button
               onClick={prevSlide}
               className="w-12 h-12 bg-amber-600 text-white rounded-full flex items-center justify-center hover:bg-amber-700 transition-all duration-300 shadow-lg hover:shadow-xl hover:scale-105"
@@ -223,7 +275,9 @@ const Testimonials = () => {
           </div>
 
           {/* Dots Indicator */}
-          <div className="flex justify-center space-x-3 mt-6">
+          <div className={`flex justify-center space-x-3 mt-6 transition-all duration-700 ${
+            isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'
+          }`} style={{ transitionDelay: '500ms' }}>
             {Array.from({ length: totalSlides }).map((_, index) => (
               <button
                 key={index}
@@ -240,7 +294,9 @@ const Testimonials = () => {
         </div>
 
         {/* Stats Section */}
-        <div className="mt-16 bg-gradient-to-br from-amber-600 to-orange-600 text-white rounded-3xl p-8 text-center shadow-2xl">
+        <div className={`mt-16 bg-gradient-to-br from-amber-600 to-orange-600 text-white rounded-3xl p-8 text-center shadow-2xl transition-all duration-700 ${
+          isVisible ? 'opacity-100 scale-100' : 'opacity-0 scale-95'
+        }`} style={{ transitionDelay: '600ms' }}>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
             <div className="text-center">
               <div className="text-4xl font-bold mb-2">4.9/5</div>
@@ -258,7 +314,9 @@ const Testimonials = () => {
         </div>
 
         {/* CTA */}
-        <div className="text-center mt-12">
+        <div className={`text-center mt-12 transition-all duration-700 ${
+          isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'
+        }`} style={{ transitionDelay: '700ms' }}>
           <p className="text-gray-600 mb-6">
             Join our family of satisfied customers
           </p>

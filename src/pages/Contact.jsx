@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { 
   FaPhone, 
   FaWhatsapp, 
@@ -15,10 +15,45 @@ import {
 } from 'react-icons/fa';
 import { Link } from 'react-router-dom';
 
-
-
 const ContactPage = () => {
+  const [isVisible, setIsVisible] = useState(false);
+  const [formData, setFormData] = useState({
+    name: '',
+    phone: '',
+    email: '',
+    tankSize: '',
+    message: ''
+  });
 
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const sectionRef = useRef(null);
+
+  // Scroll observer for entrance animations
+  useEffect(() => {
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) {
+          setIsVisible(true);
+        }
+      },
+      {
+        threshold: 0.1,
+        rootMargin: '-50px 0px'
+      }
+    );
+
+    if (sectionRef.current) {
+      observer.observe(sectionRef.current);
+    }
+
+    return () => {
+      if (sectionRef.current) {
+        observer.unobserve(sectionRef.current);
+      }
+    };
+  }, []);
+
+  // Handle contact form hash
   useEffect(() => {
     if (window.location.hash === '#contact-form') {
       const formSection = document.getElementById('contact-form');
@@ -29,18 +64,6 @@ const ContactPage = () => {
       }
     }
   }, []);
-
-
-  
-  const [formData, setFormData] = useState({
-    name: '',
-    phone: '',
-    email: '',
-    tankSize: '',
-    message: ''
-  });
-
-  const [isSubmitting, setIsSubmitting] = useState(false);
 
   const tankSizes = [
     "4×4 ft RCC Septic Tank",
@@ -138,24 +161,38 @@ const ContactPage = () => {
     }
   ];
 
+  // Staggered animation delay function
+  const getStaggerDelay = (index) => {
+    return index * 100;
+  };
+
   return (
     <div className="min-h-screen bg-gradient-to-b from-amber-50 to-white">
       
       {/* Hero Section */}
-      <section className="bg-gradient-to-br from-amber-600 via-orange-600 to-amber-700 py-20 relative overflow-hidden">
+      <section 
+        ref={sectionRef}
+        className="bg-gradient-to-br from-amber-600 via-orange-600 to-amber-700 py-20 pt-32 relative overflow-hidden"
+      >
         <div className="absolute inset-0 opacity-10">
           <div className="absolute top-10 left-10 w-32 h-32 bg-white rounded-full blur-3xl"></div>
           <div className="absolute bottom-10 right-10 w-40 h-40 bg-white rounded-full blur-3xl"></div>
         </div>
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
-          <Link 
-            to="/" 
-            className="inline-flex items-center text-white/80 hover:text-white mb-6 transition-colors"
-          >
-            <FaArrowLeft className="mr-2" />
-            Back to Home
-          </Link>
-          <div className="text-center">
+          {/* Back to Home Button */}
+          
+            <Link 
+              to="/" 
+              className="inline-flex items-center text-white/80 hover:text-white transition-colors bg-white/10 backdrop-blur-sm px-4 py-2 rounded-lg hover:bg-white/20"
+            >
+              <FaArrowLeft className="mr-2" />
+              Back to Home
+            </Link>
+       
+
+          <div className={`text-center transition-all duration-700 ${
+            isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'
+          }`}>
             <h1 className="text-4xl md:text-5xl font-bold text-white mb-6">Contact Us</h1>
             <p className="text-xl text-white/90 max-w-3xl mx-auto">
               Get expert consultation and the best prices for your RCC septic tank needs
@@ -167,7 +204,9 @@ const ContactPage = () => {
       {/* Contact Methods */}
       <section className="py-16 bg-white">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="text-center mb-12">
+          <div className={`text-center mb-12 transition-all duration-700 ${
+            isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'
+          }`}>
             <h2 className="text-3xl font-bold text-gray-900 mb-4">Get In Touch</h2>
             <p className="text-lg text-gray-600">Multiple ways to reach us for your septic tank requirements</p>
           </div>
@@ -179,7 +218,11 @@ const ContactPage = () => {
                 href={method.link}
                 className="block group"
               >
-                <div className="bg-gradient-to-br from-gray-50 to-white rounded-3xl p-6 border border-amber-200 hover:shadow-2xl transition-all duration-300 hover:border-amber-300 group-hover:scale-105 h-full text-center">
+                <div className={`bg-gradient-to-br from-gray-50 to-white rounded-3xl p-6 border border-amber-200 hover:shadow-2xl transition-all duration-500 hover:border-amber-300 group-hover:scale-105 h-full text-center ${
+                  isVisible ? 'opacity-100 scale-100' : 'opacity-0 scale-95'
+                }`}
+                style={{ transitionDelay: `${getStaggerDelay(index)}ms` }}
+              >
                   <div className={`w-16 h-16 bg-gradient-to-br ${method.color} rounded-2xl flex items-center justify-center mx-auto mb-4 group-hover:scale-110 transition-transform duration-300`}>
                     <div className="text-white">
                       {method.icon}
@@ -203,7 +246,13 @@ const ContactPage = () => {
           {/* Features */}
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
             {features.map((feature, index) => (
-              <div key={index} className="text-center group">
+              <div 
+                key={index} 
+                className={`text-center group transition-all duration-700 ${
+                  isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'
+                }`}
+                style={{ transitionDelay: `${getStaggerDelay(index) + 400}ms` }}
+              >
                 <div className="w-16 h-16 bg-gradient-to-br from-amber-500 to-orange-500 rounded-2xl flex items-center justify-center mx-auto mb-4 group-hover:scale-110 transition-transform duration-300">
                   <div className="text-white">
                     {feature.icon}
@@ -220,7 +269,9 @@ const ContactPage = () => {
       {/* Contact Form Section */}
       <section id="contact-form" className="py-16 bg-gradient-to-br from-amber-50 to-orange-50">
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="bg-white rounded-3xl p-8 md:p-12 shadow-2xl border border-amber-200">
+          <div className={`bg-white rounded-3xl p-8 md:p-12 shadow-2xl border border-amber-200 transition-all duration-700 ${
+            isVisible ? 'opacity-100 scale-100' : 'opacity-0 scale-95'
+          }`} style={{ transitionDelay: '500ms' }}>
             <div className="text-center mb-8">
               <h2 className="text-3xl font-bold text-gray-900 mb-4">Send Us Your Requirements</h2>
               <p className="text-gray-600">Fill out the form below and we'll get back to you within 24 hours</p>
@@ -229,7 +280,9 @@ const ContactPage = () => {
             <form onSubmit={handleSubmit} className="space-y-6">
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                 {/* Name */}
-                <div className="group">
+                <div className={`group transition-all duration-700 ${
+                  isVisible ? 'opacity-100 translate-x-0' : 'opacity-0 -translate-x-6'
+                }`} style={{ transitionDelay: '600ms' }}>
                   <label className="block text-gray-700 font-semibold mb-3">
                     <FaUser className="inline mr-2 text-amber-600" />
                     Full Name *
@@ -246,7 +299,9 @@ const ContactPage = () => {
                 </div>
 
                 {/* Phone */}
-                <div className="group">
+                <div className={`group transition-all duration-700 ${
+                  isVisible ? 'opacity-100 translate-x-0' : 'opacity-0 translate-x-6'
+                }`} style={{ transitionDelay: '650ms' }}>
                   <label className="block text-gray-700 font-semibold mb-3">
                     <FaPhone className="inline mr-2 text-amber-600" />
                     Phone Number *
@@ -265,7 +320,9 @@ const ContactPage = () => {
 
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                 {/* Email */}
-                <div className="group">
+                <div className={`group transition-all duration-700 ${
+                  isVisible ? 'opacity-100 translate-x-0' : 'opacity-0 -translate-x-6'
+                }`} style={{ transitionDelay: '700ms' }}>
                   <label className="block text-gray-700 font-semibold mb-3">
                     <FaEnvelope className="inline mr-2 text-amber-600" />
                     Email Address
@@ -281,7 +338,9 @@ const ContactPage = () => {
                 </div>
 
                 {/* Tank Size */}
-                <div className="group">
+                <div className={`group transition-all duration-700 ${
+                  isVisible ? 'opacity-100 translate-x-0' : 'opacity-0 translate-x-6'
+                }`} style={{ transitionDelay: '750ms' }}>
                   <label className="block text-gray-700 font-semibold mb-3">
                     Interested Tank Size
                   </label>
@@ -300,7 +359,9 @@ const ContactPage = () => {
               </div>
 
               {/* Message */}
-              <div className="group">
+              <div className={`group transition-all duration-700 ${
+                isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'
+              }`} style={{ transitionDelay: '800ms' }}>
                 <label className="block text-gray-700 font-semibold mb-3">
                   Additional Requirements
                 </label>
@@ -315,13 +376,17 @@ const ContactPage = () => {
               </div>
 
               {/* Submit Button */}
-              <button
-                type="submit"
-                disabled={isSubmitting}
-                className="w-full bg-gradient-to-r from-amber-600 to-orange-600 text-white py-4 rounded-xl hover:from-amber-700 hover:to-orange-700 transition-all duration-300 font-bold text-lg disabled:opacity-50 disabled:cursor-not-allowed shadow-lg hover:shadow-xl hover:scale-105"
-              >
-                {isSubmitting ? 'Submitting Your Enquiry...' : 'Submit Enquiry & Get Free Quote'}
-              </button>
+              <div className={`transition-all duration-700 ${
+                isVisible ? 'opacity-100 scale-100' : 'opacity-0 scale-95'
+              }`} style={{ transitionDelay: '900ms' }}>
+                <button
+                  type="submit"
+                  disabled={isSubmitting}
+                  className="w-full bg-gradient-to-r from-amber-600 to-orange-600 text-white py-4 rounded-xl hover:from-amber-700 hover:to-orange-700 transition-all duration-300 font-bold text-lg disabled:opacity-50 disabled:cursor-not-allowed shadow-lg hover:shadow-xl hover:scale-105"
+                >
+                  {isSubmitting ? 'Submitting Your Enquiry...' : 'Submit Enquiry & Get Free Quote'}
+                </button>
+              </div>
 
               <p className="text-center text-gray-500 text-sm">
                 We respect your privacy. Your information will never be shared with third parties.
@@ -334,12 +399,16 @@ const ContactPage = () => {
       {/* Map & Location Section */}
       <section className="py-16 bg-white">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="text-center mb-12">
+          <div className={`text-center mb-12 transition-all duration-700 ${
+            isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'
+          }`}>
             <h2 className="text-3xl font-bold text-gray-900 mb-4">Visit Our Location</h2>
             <p className="text-gray-600">Come visit us for a free site consultation and expert advice</p>
           </div>
           
-          <div className="bg-gradient-to-br from-amber-100 to-orange-100 rounded-3xl p-8 border border-amber-200">
+          <div className={`bg-gradient-to-br from-amber-100 to-orange-100 rounded-3xl p-8 border border-amber-200 transition-all duration-700 ${
+            isVisible ? 'opacity-100 scale-100' : 'opacity-0 scale-95'
+          }`} style={{ transitionDelay: '600ms' }}>
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 items-center">
               <div>
                 <h3 className="text-2xl font-bold text-gray-900 mb-4">Usman Septic Tanks</h3>
@@ -395,7 +464,6 @@ const ContactPage = () => {
           </div>
         </div>
       </section>
-
     </div>
   );
 };

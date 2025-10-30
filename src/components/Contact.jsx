@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { FaPhone, FaWhatsapp, FaMapMarkerAlt, FaUser, FaEnvelope, FaInstagram, FaFacebook, FaTwitter, FaArrowRight } from 'react-icons/fa';
 
 const Contact = () => {
@@ -11,6 +11,33 @@ const Contact = () => {
   });
 
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [isVisible, setIsVisible] = useState(false);
+  const sectionRef = useRef(null);
+
+  // Scroll observer for entrance animations
+  useEffect(() => {
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) {
+          setIsVisible(true);
+        }
+      },
+      {
+        threshold: 0.1,
+        rootMargin: '-50px 0px'
+      }
+    );
+
+    if (sectionRef.current) {
+      observer.observe(sectionRef.current);
+    }
+
+    return () => {
+      if (sectionRef.current) {
+        observer.unobserve(sectionRef.current);
+      }
+    };
+  }, []);
 
   const tankSizes = [
     "4×4 ft RCC Septic Tank",
@@ -107,8 +134,17 @@ const Contact = () => {
     }
   ];
 
+  // Staggered animation delay function
+  const getStaggerDelay = (index) => {
+    return index * 100;
+  };
+
   return (
-    <section id="contact" className="py-20 bg-gradient-to-br from-gray-50 to-amber-50 relative overflow-hidden">
+    <section 
+      id="contact" 
+      ref={sectionRef}
+      className="py-20 bg-gradient-to-br from-gray-50 to-amber-50 relative overflow-hidden"
+    >
       {/* Background Elements */}
       <div className="absolute top-10 left-10 w-32 h-32 bg-amber-200 rounded-full blur-3xl opacity-40"></div>
       <div className="absolute bottom-10 right-10 w-40 h-40 bg-orange-200 rounded-full blur-3xl opacity-30"></div>
@@ -116,7 +152,9 @@ const Contact = () => {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
         
         {/* Section Header */}
-        <div className="text-center mb-16">
+        <div className={`text-center mb-16 transition-all duration-700 ${
+          isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'
+        }`}>
           <span className="inline-block px-4 py-2 bg-amber-100 text-amber-800 rounded-full text-sm font-semibold mb-4 shadow-sm">
             Get In Touch
           </span>
@@ -128,78 +166,65 @@ const Contact = () => {
           </p>
         </div>
 
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 items-stretch"> {/* Added items-stretch for same height */}
           
           {/* Contact Methods */}
-          <div className="lg:col-span-1 space-y-6">
-            {/* Contact Cards */}
-            <div className="space-y-4">
-              {contactMethods.map((method, index) => (
-                <a
-                  key={index}
-                  href={method.link}
-                  className="block group"
-                >
-                  <div className="bg-white rounded-2xl p-6 border border-amber-200 hover:shadow-xl transition-all duration-300 hover:border-amber-300 group-hover:scale-105">
-                    <div className="flex items-start space-x-4">
-                      <div className={`w-12 h-12 bg-gradient-to-br ${method.color} rounded-xl flex items-center justify-center flex-shrink-0`}>
-                        <div className="text-white">
-                          {method.icon}
-                        </div>
-                      </div>
-                      <div className="flex-1">
-                        <h4 className="font-bold text-gray-900 text-lg mb-1">{method.title}</h4>
-                        <p className="text-gray-700 font-semibold mb-1">{method.info}</p>
-                        <p className="text-gray-600 text-sm">{method.description}</p>
-                      </div>
-                    </div>
-                  </div>
-                </a>
-              ))}
-            </div>
-
-            {/* Quick Info */}
-            <div className="bg-gradient-to-br from-amber-600 to-orange-600 rounded-2xl p-6 text-white">
-              <h4 className="text-lg font-bold mb-4">Why Choose Us?</h4>
-              <div className="space-y-3">
-                {[
-                  "Free Site Visit & Consultation",
-                  "Best Price Guarantee", 
-                  "Expert Technical Guidance",
-                  "Quick Installation",
-                  "15+ Years Experience",
-                  "Comprehensive Warranty"
-                ].map((item, index) => (
-                  <div key={index} className="flex items-center space-x-3">
-                    <div className="w-5 h-5 bg-white rounded-full flex items-center justify-center flex-shrink-0">
-                      <div className="w-2 h-2 bg-amber-600 rounded-full"></div>
-                    </div>
-                    <span className="text-amber-100 text-sm">{item}</span>
-                  </div>
-                ))}
-              </div>
-            </div>
-
-            {/* Social Links */}
-            <div className="bg-white rounded-2xl p-6 border border-amber-200">
-              <h4 className="font-bold text-gray-900 mb-4 text-center">Follow Us</h4>
-              <div className="flex justify-center space-x-4">
-                {socialLinks.map((social, index) => (
+          <div className="lg:col-span-1 flex flex-col">
+            <div className="flex-1 space-y-6"> {/* Added flex-1 for equal height */}
+              {/* Contact Cards */}
+              <div className="space-y-4">
+                {contactMethods.map((method, index) => (
                   <a
                     key={index}
-                    href={social.url}
-                    className={`w-12 h-12 ${social.color} text-white rounded-xl flex items-center justify-center transition-all duration-300 hover:scale-110 hover:shadow-lg`}
+                    href={method.link}
+                    className="block group"
                   >
-                    {social.icon}
+                    <div className={`bg-white rounded-2xl p-6 border border-amber-200 hover:shadow-xl transition-all duration-500 hover:border-amber-300 group-hover:scale-105 ${
+                      isVisible ? 'opacity-100 translate-x-0' : 'opacity-0 -translate-x-8'
+                    }`}
+                    style={{ transitionDelay: `${getStaggerDelay(index)}ms` }}>
+                      <div className="flex items-start space-x-4">
+                        <div className={`w-12 h-12 bg-gradient-to-br ${method.color} rounded-xl flex items-center justify-center flex-shrink-0`}>
+                          <div className="text-white">
+                            {method.icon}
+                          </div>
+                        </div>
+                        <div className="flex-1">
+                          <h4 className="font-bold text-gray-900 text-lg mb-1">{method.title}</h4>
+                          <p className="text-gray-700 font-semibold mb-1">{method.info}</p>
+                          <p className="text-gray-600 text-sm">{method.description}</p>
+                        </div>
+                      </div>
+                    </div>
                   </a>
                 ))}
+              </div>
+
+              {/* Social Links */}
+              <div className={`bg-white rounded-2xl p-6 border border-amber-200 transition-all duration-700 ${
+                isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'
+              }`} style={{ transitionDelay: '500ms' }}>
+                <h4 className="font-bold text-gray-900 mb-4 text-center">Follow Us</h4>
+                <div className="flex justify-center space-x-4">
+                  {socialLinks.map((social, index) => (
+                    <a
+                      key={index}
+                      href={social.url}
+                      className={`w-12 h-12 ${social.color} text-white rounded-xl flex items-center justify-center transition-all duration-300 hover:scale-110 hover:shadow-lg`}
+                    >
+                      {social.icon}
+                    </a>
+                  ))}
+                </div>
               </div>
             </div>
           </div>
 
           {/* Enquiry Form */}
-          <div className="lg:col-span-2">
-            <div className="bg-white rounded-3xl p-8 border border-amber-200 shadow-lg hover:shadow-xl transition-all duration-300">
+          <div className="lg:col-span-2 flex"> {/* Added flex for same height */}
+            <div className={`bg-white rounded-3xl p-8 border border-amber-200 shadow-lg hover:shadow-xl transition-all duration-700 flex-1 ${
+              isVisible ? 'opacity-100 translate-x-0 scale-100' : 'opacity-0 translate-x-8 scale-95'
+            }`} style={{ transitionDelay: '300ms' }}>
               <div className="text-center mb-8">
                 <h3 className="text-2xl font-bold text-gray-900 mb-2">Send Enquiry</h3>
                 <p className="text-gray-600">Fill the form below and get free consultation</p>

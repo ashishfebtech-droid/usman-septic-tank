@@ -2,18 +2,16 @@ import React from 'react';
 import { FaPhone, FaWhatsapp, FaEnvelope, FaMapMarkerAlt, FaFacebook, FaInstagram, FaTwitter, FaArrowRight } from 'react-icons/fa';
 
 const Footer = () => {
-  const scrollToSection = (sectionId) => {
-    const element = document.getElementById(sectionId);
-    if (element) {
-      element.scrollIntoView({ behavior: 'smooth' });
-    }
+  const navigateToPage = (path) => {
+    window.location.href = `/#${path}`;
   };
 
   const quickLinks = [
-    { name: 'Home', section: 'home' },
-    { name: 'Products', section: 'products' },
-    { name: 'About Us', section: 'about' },
-    { name: 'Contact', section: 'enquiry' }
+    { name: 'Home', path: '/' },
+    { name: 'About Us', path: '/about' },
+    { name: 'Tank Sizes Guide', path: '/tank-selection-guide' },
+    { name: 'Gallery', path: '/gallery' },
+    { name: 'Contact Us', path: '/contact' }
   ];
 
   const services = [
@@ -114,7 +112,7 @@ const Footer = () => {
               {quickLinks.map((link, index) => (
                 <li key={index}>
                   <button 
-                    onClick={() => scrollToSection(link.section)}
+                    onClick={() => navigateToPage(link.path)}
                     className="text-brown-200 hover:text-white transition-colors flex items-center space-x-2 group"
                   >
                     <FaArrowRight className="text-xs group-hover:translate-x-1 transition-transform" />

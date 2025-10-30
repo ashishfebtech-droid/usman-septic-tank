@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { 
   FaAward, 
   FaUsers, 
@@ -9,11 +9,41 @@ import {
   FaIndustry,
   FaPhone,
   FaWhatsapp,
-  FaArrowLeft
+  FaArrowLeft,
+  FaImages,
+  FaRuler
 } from 'react-icons/fa';
 import { Link } from 'react-router-dom';
 
 const AboutPage = () => {
+  const [isVisible, setIsVisible] = useState(false);
+  const sectionRef = useRef(null);
+
+  // Scroll observer for entrance animations
+  useEffect(() => {
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) {
+          setIsVisible(true);
+        }
+      },
+      {
+        threshold: 0.1,
+        rootMargin: '-50px 0px'
+      }
+    );
+
+    if (sectionRef.current) {
+      observer.observe(sectionRef.current);
+    }
+
+    return () => {
+      if (sectionRef.current) {
+        observer.unobserve(sectionRef.current);
+      }
+    };
+  }, []);
+
   const stats = [
     { number: "15+", label: "Years Experience", color: "from-amber-500 to-orange-600" },
     { number: "1000+", label: "Happy Customers", color: "from-blue-500 to-blue-600" },
@@ -63,11 +93,19 @@ const AboutPage = () => {
     }
   ];
 
+  // Staggered animation delay function
+  const getStaggerDelay = (index) => {
+    return index * 100;
+  };
+
   return (
     <div className="min-h-screen bg-gradient-to-b from-amber-50 to-white">
       
-      {/* Hero Section */}
-      <section className="bg-gradient-to-br from-amber-600 via-orange-600 to-amber-700 py-20 relative overflow-hidden">
+      {/* Hero Section - Added padding for fixed header */}
+      <section 
+        ref={sectionRef}
+        className="bg-gradient-to-br from-amber-600 via-orange-600 to-amber-700 py-32 pt-32 relative overflow-hidden"
+      >
         <div className="absolute inset-0 opacity-10">
           <div className="absolute top-10 left-10 w-32 h-32 bg-white rounded-full blur-3xl"></div>
           <div className="absolute bottom-10 right-10 w-40 h-40 bg-white rounded-full blur-3xl"></div>
@@ -80,12 +118,39 @@ const AboutPage = () => {
             <FaArrowLeft className="mr-2" />
             Back to Home
           </Link>
-          <div className="text-center">
+          <div className={`text-center transition-all duration-700 ${
+            isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'
+          }`}>
             <h1 className="text-4xl md:text-5xl font-bold text-white mb-6">About Usman Septic Tanks</h1>
-            <p className="text-xl text-white/90 max-w-3xl mx-auto">
+            <p className="text-xl text-white/90 max-w-3xl mx-auto mb-8">
               Leading the way in RCC septic tank manufacturing with 15+ years of excellence, 
               trust, and customer satisfaction
             </p>
+            
+            {/* Additional Navigation Buttons */}
+            <div className="flex flex-wrap justify-center gap-4 mt-8">
+              <Link 
+                to="/tank-selection-guide"
+                className="inline-flex items-center px-6 py-3 bg-white/20 backdrop-blur-sm text-white rounded-xl hover:bg-white/30 transition-all duration-300 border border-white/30 hover:scale-105"
+              >
+                <FaRuler className="mr-2" />
+                Tank Sizes Guide
+              </Link>
+              <Link 
+                to="/gallery"
+                className="inline-flex items-center px-6 py-3 bg-white/20 backdrop-blur-sm text-white rounded-xl hover:bg-white/30 transition-all duration-300 border border-white/30 hover:scale-105"
+              >
+                <FaImages className="mr-2" />
+                View Gallery
+              </Link>
+              <Link 
+                to="/contact"
+                className="inline-flex items-center px-6 py-3 bg-amber-500 text-white rounded-xl hover:bg-amber-600 transition-all duration-300 border border-amber-400 hover:scale-105"
+              >
+                <FaPhone className="mr-2" />
+                Contact Us
+              </Link>
+            </div>
           </div>
         </div>
       </section>
@@ -95,7 +160,13 @@ const AboutPage = () => {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="grid grid-cols-2 md:grid-cols-4 gap-8">
             {stats.map((stat, index) => (
-              <div key={index} className="text-center group">
+              <div 
+                key={index} 
+                className={`text-center group transition-all duration-700 ${
+                  isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'
+                }`}
+                style={{ transitionDelay: `${getStaggerDelay(index)}ms` }}
+              >
                 <div className="relative mb-4 flex justify-center">
                   <div className={`w-20 h-20 bg-gradient-to-br ${stat.color} rounded-2xl flex items-center justify-center shadow-lg group-hover:scale-110 transition-transform duration-300`}>
                     <div className="text-white text-3xl font-bold">
@@ -114,28 +185,32 @@ const AboutPage = () => {
       <section className="py-16">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
-            <div>
+            <div className={`transition-all duration-700 ${
+              isVisible ? 'opacity-100 translate-x-0' : 'opacity-0 -translate-x-8'
+            }`}>
               <h2 className="text-3xl font-bold text-gray-900 mb-6">Our Story</h2>
               <div className="space-y-4 text-gray-700">
-                <p>
+                <p className="transition-all duration-700 delay-200">
                   Founded in 2008, Usman Septic Tanks began with a simple mission: to provide 
                   reliable and durable waste management solutions to our community. What started 
                   as a small family business has grown into a trusted name in RCC septic tank 
                   manufacturing.
                 </p>
-                <p>
+                <p className="transition-all duration-700 delay-300">
                   Over the past 15+ years, we've installed more than 5000 septic tanks across 
                   residential, commercial, and industrial sectors. Our commitment to quality 
                   and customer satisfaction has been the cornerstone of our success.
                 </p>
-                <p>
+                <p className="transition-all duration-700 delay-400">
                   Today, we continue to innovate and improve our products while maintaining 
                   the traditional values of honesty, reliability, and excellent craftsmanship 
                   that our customers have come to trust.
                 </p>
               </div>
             </div>
-            <div className="bg-gradient-to-br from-amber-100 to-orange-100 rounded-3xl p-8 border border-amber-200">
+            <div className={`bg-gradient-to-br from-amber-100 to-orange-100 rounded-3xl p-8 border border-amber-200 transition-all duration-700 ${
+              isVisible ? 'opacity-100 translate-x-0' : 'opacity-0 translate-x-8'
+            }`} style={{ transitionDelay: '500ms' }}>
               <h3 className="text-2xl font-bold text-gray-900 mb-4">Why Choose Us?</h3>
               <div className="space-y-3">
                 {[
@@ -150,7 +225,14 @@ const AboutPage = () => {
                   "Competitive pricing",
                   "After-sales support"
                 ].map((item, index) => (
-                  <div key={index} className="flex items-center space-x-3">
+                  <div 
+                    key={index} 
+                    className="flex items-center space-x-3 transition-all duration-500"
+                    style={{ transitionDelay: `${getStaggerDelay(index) + 600}ms` }}
+                    className={`flex items-center space-x-3 transition-all duration-500 ${
+                      isVisible ? 'opacity-100 translate-x-0' : 'opacity-0 -translate-x-4'
+                    }`}
+                  >
                     <FaCheckCircle className="text-green-500 text-sm flex-shrink-0" />
                     <span className="text-gray-700">{item}</span>
                   </div>
@@ -164,13 +246,21 @@ const AboutPage = () => {
       {/* Services Section */}
       <section className="py-16 bg-gradient-to-br from-amber-50 to-orange-50">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="text-center mb-12">
+          <div className={`text-center mb-12 transition-all duration-700 ${
+            isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'
+          }`}>
             <h2 className="text-3xl font-bold text-gray-900 mb-4">Our Services</h2>
             <p className="text-lg text-gray-600">Comprehensive septic tank solutions for every need</p>
           </div>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
             {services.map((service, index) => (
-              <div key={index} className="bg-white rounded-3xl p-6 text-center shadow-lg hover:shadow-xl transition-all duration-300 border border-amber-100 group">
+              <div 
+                key={index} 
+                className={`bg-white rounded-3xl p-6 text-center shadow-lg hover:shadow-xl transition-all duration-500 border border-amber-100 group ${
+                  isVisible ? 'opacity-100 scale-100' : 'opacity-0 scale-95'
+                }`}
+                style={{ transitionDelay: `${getStaggerDelay(index)}ms` }}
+              >
                 <div className={`w-16 h-16 bg-gradient-to-br ${service.color} rounded-2xl flex items-center justify-center mx-auto mb-4 group-hover:scale-110 transition-transform duration-300`}>
                   <div className="text-white">
                     {service.icon}
@@ -187,13 +277,21 @@ const AboutPage = () => {
       {/* Values Section */}
       <section className="py-16 bg-white">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="text-center mb-12">
+          <div className={`text-center mb-12 transition-all duration-700 ${
+            isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'
+          }`}>
             <h2 className="text-3xl font-bold text-gray-900 mb-4">Our Values</h2>
             <p className="text-lg text-gray-600">The principles that guide everything we do</p>
           </div>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
             {values.map((value, index) => (
-              <div key={index} className="bg-gradient-to-br from-gray-50 to-amber-50 rounded-3xl p-6 border border-amber-200 group hover:shadow-lg transition-all duration-300">
+              <div 
+                key={index} 
+                className={`bg-gradient-to-br from-gray-50 to-amber-50 rounded-3xl p-6 border border-amber-200 group hover:shadow-lg transition-all duration-500 ${
+                  isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'
+                }`}
+                style={{ transitionDelay: `${getStaggerDelay(index)}ms` }}
+              >
                 <div className={`w-12 h-12 bg-gradient-to-br ${value.color} rounded-2xl flex items-center justify-center mb-4 group-hover:scale-110 transition-transform duration-300`}>
                   <div className="text-white text-xl">
                     {index === 0 && <FaShieldAlt />}
@@ -205,7 +303,14 @@ const AboutPage = () => {
                 <p className="text-gray-600 mb-4">{value.description}</p>
                 <ul className="space-y-2">
                   {value.points.map((point, pointIndex) => (
-                    <li key={pointIndex} className="flex items-center space-x-2 text-gray-700">
+                    <li 
+                      key={pointIndex} 
+                      className="flex items-center space-x-2 text-gray-700 transition-all duration-500"
+                      style={{ transitionDelay: `${getStaggerDelay(pointIndex) + 300}ms` }}
+                      className={`flex items-center space-x-2 text-gray-700 transition-all duration-500 ${
+                        isVisible ? 'opacity-100 translate-x-0' : 'opacity-0 -translate-x-4'
+                      }`}
+                    >
                       <FaCheckCircle className="text-green-500 text-sm flex-shrink-0" />
                       <span className="text-sm">{point}</span>
                     </li>
@@ -220,35 +325,56 @@ const AboutPage = () => {
       {/* CTA Section */}
       <section className="py-16 bg-gradient-to-br from-amber-600 to-orange-600 text-white">
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-          <h2 className="text-3xl font-bold mb-4">Ready to Get Started?</h2>
-          <p className="text-amber-100 mb-8 text-lg">
-            Contact us today for a free consultation and quote for your septic tank needs
-          </p>
-          <div className="flex flex-col sm:flex-row gap-4 justify-center">
-            <a 
-              href="#contact" 
-              className="inline-flex items-center justify-center px-8 py-3 bg-white text-amber-700 font-bold rounded-xl hover:bg-amber-50 transition-all duration-300 shadow-lg hover:shadow-xl hover:scale-105"
-            >
-              Get Free Quote
-            </a>
-            <a 
-              href="tel:+919012901312" 
-              className="inline-flex items-center justify-center px-8 py-3 border-2 border-white text-white font-bold rounded-xl hover:bg-white hover:text-amber-700 transition-all duration-300"
-            >
-              <FaPhone className="mr-2" />
-              Call Now
-            </a>
-            <a 
-              href="https://wa.me/919012901312" 
-              className="inline-flex items-center justify-center px-8 py-3 border-2 border-white text-white font-bold rounded-xl hover:bg-white hover:text-amber-700 transition-all duration-300"
-            >
-              <FaWhatsapp className="mr-2" />
-              WhatsApp
-            </a>
+          <div className={`transition-all duration-700 ${
+            isVisible ? 'opacity-100 scale-100' : 'opacity-0 scale-95'
+          }`}>
+            <h2 className="text-3xl font-bold mb-4">Ready to Get Started?</h2>
+            <p className="text-amber-100 mb-8 text-lg">
+              Contact us today for a free consultation and quote for your septic tank needs
+            </p>
+            <div className="flex flex-col sm:flex-row gap-4 justify-center">
+              <Link 
+                to="/contact"
+                className="inline-flex items-center justify-center px-8 py-3 bg-white text-amber-700 font-bold rounded-xl hover:bg-amber-50 transition-all duration-300 shadow-lg hover:shadow-xl hover:scale-105"
+              >
+                Get Free Quote
+              </Link>
+              <a 
+                href="tel:+919012901312" 
+                className="inline-flex items-center justify-center px-8 py-3 border-2 border-white text-white font-bold rounded-xl hover:bg-white hover:text-amber-700 transition-all duration-300"
+              >
+                <FaPhone className="mr-2" />
+                Call Now
+              </a>
+              <a 
+                href="https://wa.me/919012901312" 
+                className="inline-flex items-center justify-center px-8 py-3 border-2 border-white text-white font-bold rounded-xl hover:bg-white hover:text-amber-700 transition-all duration-300"
+              >
+                <FaWhatsapp className="mr-2" />
+                WhatsApp
+              </a>
+            </div>
+            
+            {/* Additional Page Links */}
+            <div className="mt-8 flex flex-wrap justify-center gap-4">
+              <Link 
+                to="/tank-selection-guide"
+                className="inline-flex items-center px-6 py-2 bg-white/20 text-white rounded-lg hover:bg-white/30 transition-all duration-300"
+              >
+                <FaRuler className="mr-2" />
+                Tank Sizes
+              </Link>
+              <Link 
+                to="/gallery"
+                className="inline-flex items-center px-6 py-2 bg-white/20 text-white rounded-lg hover:bg-white/30 transition-all duration-300"
+              >
+                <FaImages className="mr-2" />
+                Our Gallery
+              </Link>
+            </div>
           </div>
         </div>
       </section>
-
     </div>
   );
 };
