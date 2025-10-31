@@ -15,11 +15,8 @@ import ContactPage from "./pages/Contact";
 function App() {
   useLenis();
 
-  // Production mein basename set karo, local mein empty string
-  const basename = import.meta.env.MODE === 'production' ? '/usman-septic-tank/' : '/';
-
   return (
-    <Router basename={basename}>
+    <Router>  {/* ✅ Basename remove karo */}
       <div className="App">
         <Header />
         <main>
@@ -28,10 +25,7 @@ function App() {
             <Route path="/gallery" element={<Gallery />} />
             <Route path="/about" element={<AboutPage />} />
             <Route path="/contact" element={<ContactPage />} />
-            <Route
-              path="/tank-selection-guide"
-              element={<TankSelectionGuide />}
-            />
+            <Route path="/tank-selection-guide" element={<TankSelectionGuide />} />
           </Routes>
         </main>
         <Footer />
