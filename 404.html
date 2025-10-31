@@ -4,12 +4,11 @@
     <meta charset="utf-8">
     <title>Redirecting...</title>
     <script>
-      // Current path store karte hain
-      sessionStorage.redirect = window.location.pathname + window.location.search;
+      sessionStorage.redirect = location.pathname;
+      location.replace('/usman-septic-tank/');
     </script>
-    <meta http-equiv="refresh" content="0;URL='/usman-septic-tank/'" />
   </head>
   <body>
-    <p>Redirecting to home page...</p>
+    <p>Redirecting...</p>
   </body>
 </html>
