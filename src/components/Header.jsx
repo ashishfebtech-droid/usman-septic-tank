@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 import {
   FaPhone,
   FaEnvelope,
@@ -12,6 +12,7 @@ import {
 
 const Header = () => {
   const navigate = useNavigate();
+  const location = useLocation();
   const [isMenuOpen, setIsMenuOpen] = useState(false);
 
   // Background scroll disable when sidebar opens
@@ -27,10 +28,23 @@ const Header = () => {
     };
   }, [isMenuOpen]);
 
-  // Navigation function - HashRouter ke liye (Footer jaise)
+  // ✅ Correct navigation for HashRouter
   const navigateToPage = (path) => {
-    window.location.href = `/#${path}`;
+    navigate(path);
     setIsMenuOpen(false);
+  };
+
+  // ✅ Correct contact form navigation
+  const navigateToContactForm = () => {
+    navigate('/contact');
+    setIsMenuOpen(false);
+    // Scroll to form after navigation
+    setTimeout(() => {
+      const formElement = document.getElementById('contact-form');
+      if (formElement) {
+        formElement.scrollIntoView({ behavior: 'smooth' });
+      }
+    }, 100);
   };
 
   const socialLinks = [
@@ -108,9 +122,7 @@ const Header = () => {
               </button>
 
               <button
-                onClick={() => {
-                  window.location.href = '/#/contact#contact-form';
-                }}
+                onClick={navigateToContactForm}
                 className="bg-gradient-to-r from-amber-700 to-amber-600 text-white px-6 py-2.5 rounded-lg hover:from-amber-800 hover:to-amber-700 font-medium shadow-md hover:shadow-lg transition-all ml-4"
               >
                 Get Quote
@@ -244,10 +256,7 @@ const Header = () => {
 
               {/* Quick Enquiry Button */}
               <button
-                onClick={() => {
-                  window.location.href = '/#/contact#contact-form';
-                  setIsMenuOpen(false);
-                }}
+                onClick={navigateToContactForm}
                 className="w-full bg-gradient-to-r from-amber-700 to-amber-600 text-white py-3.5 rounded-xl font-semibold mt-auto shadow-lg hover:shadow-xl hover:from-amber-800 hover:to-amber-700 transition-all"
               >
                 Get Free Quote
