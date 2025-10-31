@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { HashRouter as Router, Routes, Route } from "react-router-dom";
 import Header from "./components/Header";
 import Footer from "./components/Footer";
@@ -15,8 +15,17 @@ import ContactPage from "./pages/Contact";
 function App() {
   useLenis();
 
+  // ✅ HashRouter ke liye redirect logic
+  useEffect(() => {
+    const currentPath = window.location.pathname;
+    if (currentPath !== '/usman-septic-tank/' && !currentPath.includes('#')) {
+      const newPath = currentPath.replace('/usman-septic-tank', '');
+      window.history.replaceState(null, '', '/usman-septic-tank/#' + newPath);
+    }
+  }, []);
+
   return (
-    <Router>  {/* ✅ Basename remove karo */}
+    <Router>
       <div className="App">
         <Header />
         <main>
@@ -25,7 +34,10 @@ function App() {
             <Route path="/gallery" element={<Gallery />} />
             <Route path="/about" element={<AboutPage />} />
             <Route path="/contact" element={<ContactPage />} />
-            <Route path="/tank-selection-guide" element={<TankSelectionGuide />} />
+            <Route
+              path="/tank-selection-guide"
+              element={<TankSelectionGuide />}
+            />
           </Routes>
         </main>
         <Footer />
